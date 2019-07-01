@@ -3,25 +3,14 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-require("dotenv").config();
 
-var mongoose = require("mongoose");
-mongoose.set('useCreateIndex', true);
+require("dotenv").config();
+require("./database/db");
 
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/users");
 
 var app = express();
-
-// connect to DataBase
-mongoose.connect(
-  `mongodb://${process.env.DB_USER}:${
-    process.env.DB_PASS
-  }@ds245647.mlab.com:45647/${process.env.DB_DATABASE_NAME}`,
-  {
-    useNewUrlParser: true
-  }
-)
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
