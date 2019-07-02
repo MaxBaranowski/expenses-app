@@ -1,6 +1,7 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 mongoose.set("useCreateIndex", true);
+let db = mongoose.connection;
 
 // connect to DataBase
 mongoose.connect(
@@ -11,3 +12,13 @@ mongoose.connect(
     useNewUrlParser: true
   }
 );
+
+// check for mMngoDb connection
+db.once("open", function() {
+  console.log("| Connection to MongoDB |");
+});
+
+// check for DB error
+db.once("error", function(err) {
+  console.log(err);
+});
