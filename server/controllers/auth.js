@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 var User = require("../database/models/User");
+var passport = require("passport");
 
 module.exports.signup = function(req, res, next) {
   let params = req.body || req.query;
@@ -29,31 +30,14 @@ module.exports.signup = function(req, res, next) {
 };
 
 module.exports.login = function(req, res, next) {
-  let params = req.body || req.query;
-
-  new Promise(function(resolve, reject) {
-    User.findOne({
-      email: params.email,
-      password: params.password
-    }).exec(function(err, data) {
-      if (err) {
-        reject(err);
-      }
-      resolve(data);
-    });
-  }).then(
-    function(result) {
-      if (!result) return res.status(400).send("Email or Password is invalid");
-      // user authenticate
-      res.status(200).send(result);
-      //console.log(result);
-    },
-    function(err) {
-      return next(err);
-    }
-  );
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login"
+  })(req, res, next);
 };
 
-module.exports.logout = function() {
+module.exports.logout = async function(req, res, next) {
+  await req.logout();
+  res.send("logout");
   console.log("logout");
 };
