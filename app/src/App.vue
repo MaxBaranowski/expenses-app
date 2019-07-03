@@ -1,28 +1,91 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <nav>
+      <ul>
+        <li>
+          <router-link tag="li" to="/">
+            <a>home</a>
+          </router-link>
+        </li>
+        <li>
+          <router-link tag="li" to="/login">
+            <a>login</a>
+          </router-link>
+        </li>
+        <li>
+          <router-link tag="li" to="/register">
+            <a>register</a>
+          </router-link>
+        </li>
+        <li>
+          <router-link tag="li" to="/forget">
+            <a>forget</a>
+          </router-link>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <router-view></router-view>
+    </main>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import Form from "./components/LoginForm/Form.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    HelloWorld
+    // Form
   }
-}
+};
 </script>
 
 <style>
+* {
+  margin: 0;
+  padding: 0;
+}
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+nav ul {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  justify-content: space-around;
+}
+
+nav li {
+  list-style-type: none;
+}
+
+nav li a {
+  text-decoration: none;
+  color: #2c3e50;
+}
+
+nav li a:hover {
+  text-decoration: underline;
+}
+
+main {
+  display: flex;
+  height: 100%;
 }
 </style>
