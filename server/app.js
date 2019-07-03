@@ -20,8 +20,10 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
 app.use(logger("dev"));
+// read JSON content-type (body parser built into express)
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -30,7 +32,8 @@ app.use(
   session({
     secret: "secret",
     saveUninitialized: true,
-    resave: true
+    resave: true,
+    cookie: { maxAge: 10 * 60 * 1000 } //in miliseconds 1s = 1000ms
   })
 );
 

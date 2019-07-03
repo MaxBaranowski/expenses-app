@@ -30,9 +30,24 @@ module.exports.signup = function(req, res, next) {
 };
 
 module.exports.login = function(req, res, next) {
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login"
+  passport.authenticate("local", function(err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.json({ error: info.message });
+    }
+    
+    // using a custom callback, it becomes the application's responsibility to establish a session (by calling req.login()) and send a response.
+    // req.login() assigns the user object to the request object req as req.user once the login operation completes.
+    req.logIn(user, function(err) {
+      if (err) {
+        return next(err);
+      }
+      // console.log("login", user);
+      res.redirect("/");
+    });
+
   })(req, res, next);
 };
 

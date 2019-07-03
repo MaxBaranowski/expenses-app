@@ -5,7 +5,8 @@ const auth = require("../controllers/auth");
 require("../oauth/LocalStrategy");
 
 router.get("/", function(req, res, next) {
-  res.send("Hello");
+  // req user - user from sessiom
+  res.json(req.user);
 });
 
 /* SIGN UP USER. */

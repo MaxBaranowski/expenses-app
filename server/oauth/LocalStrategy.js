@@ -10,7 +10,6 @@ passport.use(
       passwordField: "password"
     },
     function(email, password, done) {
-      //console.log(1, email, password);
       User.findOne({ email: email, password: password }, function(err, user) {
         if (err) {
           return done(err);
@@ -25,11 +24,16 @@ passport.use(
 );
 
 passport.serializeUser(function(user, done) {
+  // console.log("serializeUser", user);
+  // user id  is saved in the session
   done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
+  // get the whole object from sseesion by id
+  // console.log("serializeUser", id);
   User.findById(id, function(err, user) {
+    // object is attached to the request object as req.user
     done(err, user);
   });
 });
