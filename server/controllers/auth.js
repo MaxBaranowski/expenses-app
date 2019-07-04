@@ -47,8 +47,7 @@ module.exports.login = function(req, res, next) {
       // console.log("login", user);
       // res.setHeader("Access-Control-Allow-Credentials", "true");
       // req.session.user = user;
-      res.send(user);
-      // res.redirect("/");
+      res.send({ user: user._id, redirect: "/" });
     });
   })(req, res, next);
 };
