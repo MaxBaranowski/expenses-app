@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const cors = require("cors");
 
 var passport = require("passport");
 var session = require("express-session");
@@ -21,6 +22,16 @@ app.set("view engine", "jade");
 
 app.use(logger("dev"));
 // read JSON content-type (body parser built into express)
+
+// enable cors
+app.use(
+  cors({
+    origin: ["http://localhost:3000","http://localhost:8080"],
+    methods: ["GET", "POST"],
+    credentials: true // enable set cookie
+  })
+);
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -33,7 +44,18 @@ app.use(
     secret: "secret",
     saveUninitialized: true,
     resave: true,
-    cookie: { maxAge: 10 * 60 * 1000 } //in miliseconds 1s = 1000ms
+    cookie: {
+      httpOnly: false,
+      maxAge: 10 * 60 * 1000
+    } //in miliseconds 1s = 1000ms
+  })
+);
+
+app.use(
+  express.json({
+    limit: "1024kb",
+    strict: true,
+    type: "application/json"
   })
 );
 

@@ -6,16 +6,16 @@ var LocalStrategy = require("passport-local").Strategy;
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "email",
+      usernameField: "login",
       passwordField: "password"
     },
-    function(email, password, done) {
-      User.findOne({ email: email, password: password }, function(err, user) {
+    function(login, password, done) {
+      User.findOne({ email: login, password: password }, function(err, user) {
         if (err) {
           return done(err);
         }
         if (!user) {
-          return done(null, false, { message: "Email or Password is invalid" });
+          return done(null, false, { message: "Login or Password is invalid" });
         }
         return done(null, user);
       });

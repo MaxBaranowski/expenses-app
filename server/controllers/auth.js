@@ -35,9 +35,9 @@ module.exports.login = function(req, res, next) {
       return next(err);
     }
     if (!user) {
-      return res.json({ error: info.message });
+      return res.status(403).json({ error: info.message });
     }
-    
+
     // using a custom callback, it becomes the application's responsibility to establish a session (by calling req.login()) and send a response.
     // req.login() assigns the user object to the request object req as req.user once the login operation completes.
     req.logIn(user, function(err) {
@@ -45,9 +45,11 @@ module.exports.login = function(req, res, next) {
         return next(err);
       }
       // console.log("login", user);
-      res.redirect("/");
+      // res.setHeader("Access-Control-Allow-Credentials", "true");
+      // req.session.user = user;
+      res.send(user);
+      // res.redirect("/");
     });
-
   })(req, res, next);
 };
 
