@@ -11,7 +11,7 @@
         v-model="credentials.login"
         v-on:blur="isFieldEmpty"
         v-on:keyup="isFieldEmpty"
-        value="Mickey"
+        placeholder="Mickey"
       />
       <p class="text-danger" v-if="errors.login">Login can`t be empty</p>
 
@@ -22,14 +22,14 @@
         v-on:blur="isFieldEmpty"
         v-on:keyup="isFieldEmpty"
         v-model="credentials.password"
-        value="Mouse"
+        placeholder="******"
       />
       <p class="text-danger" v-if="errors.password">Password can`t be empty</p>
 
-      <input type="submit" value="Submit" />
+      <button type="submit">Submit</button>
       <p class="text-danger" v-if="errors.submit">{{errors.submit}}</p>
 
-      <router-link tag="li" to="/forget">
+      <router-link tag="li" to="/forget" class="forget-password">
         <a>Forgot your password?</a>
       </router-link>
     </form>

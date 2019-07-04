@@ -6,7 +6,7 @@
       <label for="email">Email:</label>
       <input type="text" name="email" value="mail@mail.com" />
 
-      <input type="submit" value="Submit" />
+      <button type="submit">Send Email</button>
     </form>
   </section>
 </template>
