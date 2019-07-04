@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import "../Form.scss";
 
 export default {};
 </script>

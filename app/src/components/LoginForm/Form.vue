@@ -1,10 +1,27 @@
 <template>
   <div id="Form">
-    <h1>this is form componen</h1>
+    <nav>
+      <ul>
+        <li>
+          <router-link tag="li" to="/login">
+            <a>login</a>
+          </router-link>
+        </li>
+        <li>
+          <router-link tag="li" to="/register">
+            <a>register</a>
+          </router-link>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <router-view></router-view>
+    </main>
   </div>
 </template>
 
 <script>
+import "./Form.scss";
 
 export default {
   name: "Form",
