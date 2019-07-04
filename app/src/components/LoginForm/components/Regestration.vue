@@ -13,7 +13,7 @@
       <label for="pasword">Password:</label>
       <input type="password" name="password" value="Mouse" />
 
-      <input type="submit" value="Submit" />
+      <button type="submit">Register</button>
     </form>
   </section>
 </template>
