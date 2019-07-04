@@ -3,11 +3,6 @@
     <nav>
       <ul>
         <li>
-          <router-link tag="li" to="/">
-            <a>home</a>
-          </router-link>
-        </li>
-        <li>
           <router-link tag="li" to="/login">
             <a>login</a>
           </router-link>
@@ -15,11 +10,6 @@
         <li>
           <router-link tag="li" to="/register">
             <a>register</a>
-          </router-link>
-        </li>
-        <li>
-          <router-link tag="li" to="/forget">
-            <a>forget</a>
           </router-link>
         </li>
       </ul>
@@ -62,12 +52,13 @@ nav {
   display: flex;
   width: 100%;
   justify-content: flex-end;
+  margin-top: 25px;
 }
 
 nav ul {
   display: flex;
   flex-direction: row;
-  width: 50%;
+  width: 20%;
   justify-content: space-around;
 }
 
