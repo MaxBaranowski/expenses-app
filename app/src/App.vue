@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <Form v-if="!this.$cookie.get('connect.sid')" />
+    <Form v-if="!connect" />
+    <!-- !this.$cookie.get('connect.sid') -->
     <UserExpensesTable v-else />
   </div>
 </template>
@@ -10,11 +11,36 @@ import "./styles.scss";
 import Form from "./components/LoginForm/Form.vue";
 import UserExpensesTable from "./components/UserExpensesTable/UserExpensesTable";
 
+const LOGIN_URL = "http://localhost:3000/user/isUserAuthorized";
+
 export default {
   name: "app",
   components: {
     Form,
     UserExpensesTable
+  },
+  data() {
+    return {
+      connect: false
+    };
+  },
+  created() {
+    this.axios({
+      method: "post",
+      url: LOGIN_URL,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(result => {
+        this.connect = true;
+        // console.log(1);
+      })
+      .catch(error => {
+        this.connect = false;
+        // console.log(2);
+      });
   }
 };
 </script>

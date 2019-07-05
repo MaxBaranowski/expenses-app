@@ -122,7 +122,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$cookie.get("connect.sid"));
+    // console.log(this.$cookie.get("connect.sid"));
   }
 };
 </script>

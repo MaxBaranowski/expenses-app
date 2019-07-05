@@ -22,4 +22,8 @@ router.post("/login", auth.login);
 router.get("/logout", auth.logout);
 router.post("/logout", auth.logout);
 
+/* CHECK IF USER LOGED IN. */
+router.get("/isUserAuthorized", auth.isUserAuthorized);
+router.post("/isUserAuthorized", auth.isUserAuthorized);
+
 module.exports = router;

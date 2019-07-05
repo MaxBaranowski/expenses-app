@@ -54,7 +54,19 @@ module.exports.logout = async function(req, res, next) {
   console.log(req.user);
   req.logout();
   req.session.destroy();
-  res.status(200).clearCookie("connect.sid", {
-    path: "/"
-  });
+  res
+    .status(200)
+    .clearCookie("connect.sid", {
+      path: "/"
+    })
+    .send(true);
+};
+
+module.exports.isUserAuthorized = async function(req, res, next) {
+  console.log(req.user);
+  if (req.user) {
+    res.status(200).send(true);
+  } else {
+    res.status(403).send(false);
+  }
 };
