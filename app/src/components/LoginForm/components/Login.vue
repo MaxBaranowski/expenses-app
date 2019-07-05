@@ -40,7 +40,7 @@
 const LOGIN_URL = "http://localhost:3000/user/login";
 
 export default {
-  /* eslint-disable */ 
+  /* eslint-disable */
   name: "login-form",
   data() {
     return {
@@ -103,6 +103,8 @@ export default {
         data: this.credentials
       })
         .then(result => {
+          this.$router.push("/");
+          location.reload();
           console.log(result);
         })
         .catch(error => {
@@ -118,6 +120,9 @@ export default {
           }
         });
     }
+  },
+  mounted() {
+    console.log(this.$cookie.get("connect.sid"));
   }
 };
 </script>

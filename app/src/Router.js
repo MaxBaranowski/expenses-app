@@ -20,4 +20,3 @@ export default new VueRouter({
   mode: "history",
   linkActiveClass: "active-link"
 });
-
