@@ -53,11 +53,8 @@ module.exports.login = function(req, res, next) {
 module.exports.logout = async function(req, res, next) {
   console.log(req.user);
   req.logout();
+  req.session.destroy();
   res.status(200).clearCookie("connect.sid", {
     path: "/"
   });
-  req.session.destroy(function(err) {
-     res.send("logout");
-  });
- 
 };
