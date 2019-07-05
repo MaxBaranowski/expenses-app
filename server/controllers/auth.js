@@ -63,7 +63,7 @@ module.exports.logout = async function(req, res, next) {
 };
 
 module.exports.isUserAuthorized = async function(req, res, next) {
-  console.log(req.user);
+  // console.log(req.user);
   if (req.user) {
     res.status(200).send(true);
   } else {
