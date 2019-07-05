@@ -40,6 +40,7 @@
 const LOGIN_URL = "http://localhost:3000/user/login";
 
 export default {
+  /* eslint-disable */ 
   name: "login-form",
   data() {
     return {
@@ -59,7 +60,6 @@ export default {
       let el = event.target.name;
       let elValue = event.target.value;
       if (elValue.length < 1) {
-        console.log(el, elValue, elValue.length);
         this.errors[el] = true;
       } else {
         this.errors[el] = false;

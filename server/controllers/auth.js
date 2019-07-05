@@ -8,7 +8,7 @@ module.exports.signup = function(req, res, next) {
     _id: new mongoose.Types.ObjectId(),
     firstName: params.firstName,
     lastName: params.lastName,
-    email: params.email,
+    email: params.login,
     password: params.password
   });
 
@@ -19,9 +19,7 @@ module.exports.signup = function(req, res, next) {
     });
   }).then(
     function(result) {
-      // user authenticate
-      res.status(200).send(result);
-      //console.log(result);
+      res.status(200).json({ message: result });
     },
     function(err) {
       return next(err);
