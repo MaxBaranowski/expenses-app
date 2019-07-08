@@ -24,7 +24,7 @@ export default {
       connect: false
     };
   },
-  created() {
+  beforeCreate() {
     this.axios({
       method: "post",
       url: LOGIN_URL,

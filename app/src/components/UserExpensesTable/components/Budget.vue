@@ -135,7 +135,14 @@
                   <td colspan="2">Delete</td>
                 </tr>
               </tbody>
-              <tbody></tbody>
+              <tfoot>
+                <tr>
+                  <td></td>
+                  <td colspan="3">Total</td>
+                  <td colspan="2">$32</td>
+                  <td colspan="2"></td>
+                </tr>
+              </tfoot>
             </table>
           </div>
           <div class="expenses-calendar-card">
@@ -159,7 +166,14 @@
                   <td colspan="2">Delete</td>
                 </tr>
               </tbody>
-              <tbody></tbody>
+              <tfoot>
+                <tr>
+                  <td></td>
+                  <td colspan="3">Total</td>
+                  <td colspan="2">$32</td>
+                  <td colspan="2"></td>
+                </tr>
+              </tfoot>
             </table>
           </div>
           <div class="expenses-calendar-card">
@@ -183,7 +197,14 @@
                   <td colspan="2">Delete</td>
                 </tr>
               </tbody>
-              <tbody></tbody>
+              <tfoot>
+                <tr>
+                  <td></td>
+                  <td colspan="3">Total</td>
+                  <td colspan="2">$32</td>
+                  <td colspan="2"></td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
