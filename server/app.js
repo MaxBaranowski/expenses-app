@@ -46,7 +46,7 @@ app.use(
     resave: true,
     cookie: {
       httpOnly: false,
-      maxAge: 10 * 60 * 1000
+      maxAge: 30 * 60 * 1000
     } //in miliseconds 1s = 1000ms
   })
 );
