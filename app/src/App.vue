@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Form v-if="!connect" />
-    <!-- !this.$cookie.get('connect.sid') -->
+    <h1 v-if="isLoading">LOADING!!!!</h1>
+    <Form v-else-if="!userLoggedIn" />
     <UserExpensesTable v-else />
   </div>
 </template>
@@ -21,10 +21,12 @@ export default {
   },
   data() {
     return {
-      connect: false
+      userLoggedIn: false,
+      isLoading: true
     };
   },
   beforeCreate() {
+    this.isLoading = true;
     this.axios({
       method: "post",
       url: LOGIN_URL,
@@ -34,11 +36,13 @@ export default {
       }
     })
       .then(result => {
-        this.connect = true;
+        this.userLoggedIn = true;
+        this.isLoading = false;
         // console.log(1);
       })
       .catch(error => {
-        this.connect = false;
+        this.userLoggedIn = false;
+        this.isLoading = false;
         // console.log(2);
       });
   }
