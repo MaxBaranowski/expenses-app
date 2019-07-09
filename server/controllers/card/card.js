@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 var dayliCard = require("../../models/CardDay");
 var monthlyCard = require("../../models/CardMonth");
 
+const _card = require("./models/card_db_requests");
+
 module.exports.addDayExpense = function(req, res, next) {
   // if (!req.user) {
   //   res.status(400).json({ error: "User must be loged in!" });
@@ -10,80 +12,36 @@ module.exports.addDayExpense = function(req, res, next) {
   const { cards, date } =
     Object.keys(req.body).length > 0 ? req.body : req.params;
 
-  let card = new dayliCard({
-    _id: new mongoose.Types.ObjectId(),
-    user_id: user_id,
-    cards: cards,
-    date: date
-  });
-
-  new Promise(function(resolve, reject) {
-    // check if card exist
-    dayliCard.findOne(
-      {
-        user_id: user_id,
-        date: date
-      },
-      function(err, exist) {
-        if (err) {
-          console.log(1, err)
+  new Promise((resolve, reject) => {
+    _card
+      .isDayliCardExist({ user_id, date })
+      .then(card => {
+        if (card) {
+          // if no card
+          _card
+            .updateCardExpenses({ user_id, date, cards })
+            .then(res => resolve(res))
+            .catch(err => reject(err));
+        } else {
+          // if card already exists
+          _card
+            .createNewCard({ user_id, date, cards })
+            .then(res => resolve(res))
+            .catch(err => reject(err));
         }
-        console.log(2, exist.user_id, exist.date)
-      }
-    );
-    return;
-    // create new card
-    card.save(function(error) {
-      if (error) {
-        reject(error);
-      }
-      resolve("Card created");
-    });
+      })
+      .catch(err => reject(err));
   })
-    .then(
-      function() {
-        dayliCard.aggregate(
-          [
-            { $unwind: "$cards" },
-            {
-              $match: { user_id: user_id, date: date }
-            },
-            {
-              $group: {
-                _id: { user_id: "$user_id", date: "$date" },
-                totalAmmount: { $sum: "$cards.ammount" }
-              }
-            },
-            { $project: { totalAmmount: true, _id: false } }
-          ],
-          (err, suc) => {
-            if (err) {
-              return next(err);
-            }
-            let totalAmmount = suc[0].totalAmmount;
-
-            dayliCard.findOneAndUpdate(
-              {
-                user_id: user_id,
-                date: date
-              },
-              {
-                $set: { totalAmmount: totalAmmount }
-              },
-              (err, doc) => {
-                if (err) {
-                  return next(err);
-                }
-                res.status(200).json(doc);
-              }
-            );
-          }
-        );
-      },
-      function(err) {
-        return next(err);
-      }
-    )
+    .then(() => {
+      _card
+        .getCardTotalAmmount({ user_id, date })
+        .then(totalAmmount =>
+          _card
+            .updateCardTotalAmmount({ user_id, date, totalAmmount })
+            .then(done => res.status(200).json(done))
+        )
+        .catch(err => next(err));
+    })
     .catch(function(err) {
       return next(err);
     });
