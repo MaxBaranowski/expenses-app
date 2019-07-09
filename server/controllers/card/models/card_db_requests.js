@@ -108,4 +108,6 @@ module.exports.updateCardExpenses = function({ user_id, date, cards }) {
   });
 };
 
-module.exports.addDayExpense = function() {};
+module.exports.getMonths = function({ user_id, year }) {
+
+};

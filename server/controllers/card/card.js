@@ -1,7 +1,3 @@
-const mongoose = require("mongoose");
-var dayliCard = require("../../models/CardDay");
-var monthlyCard = require("../../models/CardMonth");
-
 const _card = require("./models/card_db_requests");
 
 module.exports.addDayExpense = function(req, res, next) {
@@ -12,7 +8,7 @@ module.exports.addDayExpense = function(req, res, next) {
   const { cards, date } =
     Object.keys(req.body).length > 0 ? req.body : req.params;
 
-  new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     _card
       .isDayliCardExist({ user_id, date })
       .then(card => {
@@ -47,8 +43,31 @@ module.exports.addDayExpense = function(req, res, next) {
     });
 };
 
-module.exports.removeDayExpense = function(req, res, next) {};
+module.exports.removeDayExpense = function(req, res, next) {
+  return new Promise((resolve, reject) => {})
+    .then(result => {
+      res.json(result);
+    })
+    .catch(function(err) {
+      return next(err);
+    });
+};
 
-module.exports.getMonthExpenses = function(req, res, next) {};
+module.exports.getYearlyExpenses = function(req, res, next) {
+  // if (!req.user) {
+  //   res.status(400).json({ error: "User must be loged in!" });
+  // }
+  const user_id = "5d1de1e82fc35f0b2acc3b4f"; //req.user._id;
+  const { year } = Object.keys(req.body).length > 0 ? req.body : req.params;
 
-module.exports.getYearExpenses = function(req, res, next) {};
+  _card
+    .getMonths({ user_id, year })
+    .then(result => {
+      res.json(result);
+    })
+    .catch(function(err) {
+      return next(err);
+    });
+};
+
+module.exports.getYearlyExpenses = function(req, res, next) {};

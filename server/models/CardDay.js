@@ -32,6 +32,12 @@ var cardSchema = mongoose.Schema(
     date: {
       type: Number, // year-month-day
       required: true
+    },
+    month: {
+      type: Number
+    },
+    year: {
+      type: Number
     }
   },
   { collection: "card-day" }
