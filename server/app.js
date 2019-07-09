@@ -13,6 +13,7 @@ require("./database/db");
 
 const indexRouter = require("./routes/index");
 const userRouter = require("./routes/users");
+const cardRouter = require("./routes/card");
 
 const app = express();
 
@@ -65,6 +66,7 @@ app.use(passport.session());
 
 app.use("/", indexRouter);
 app.use("/user", userRouter);
+app.use("/card", cardRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
