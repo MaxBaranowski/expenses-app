@@ -15,15 +15,10 @@ var cardSchema = mongoose.Schema(
             unique: true
           },
           ammount: {
-            type: Number,
-            default: 0
+            type: Number
           },
           income: {
-            type: Number,
-            default: 0
-          },
-          cards: {
-            type: []
+            type: Number
           }
         }
       ]
@@ -39,6 +34,9 @@ var cardSchema = mongoose.Schema(
     totalIncome: {
       type: Number,
       default: 0
+    },
+    year: {
+      type: Number
     }
   },
   { collection: "card-year" }
