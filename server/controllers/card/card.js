@@ -93,18 +93,3 @@ module.exports.getFullExpenses = async function(req, res, next) {
   }
 };
 
-// module.exports.addYearExpencesCard = function(req, res, next) {
-//   // if (!req.user) {
-//   //   res.status(400).json({ error: "User must be loged in!" });
-//   // }
-
-//   const { year } = Object.keys(req.body).length > 0 ? req.body : req.params;
-
-//   return new Promise((resolve, reject) => {
-//     _card.createYearNewCard({ user_id, year }).then(result => {
-//       res.json(result);
-//     });
-//   }).catch(function(err) {
-//     return next(err);
-//   });
-// };

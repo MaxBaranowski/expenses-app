@@ -3,7 +3,7 @@ var dayliCard = require("../../../models/CardDay");
 var yearCard = require("../../../models/CardYear");
 
 module.exports.isDayliCardExist = function({ user_id, date }) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     dayliCard.findOne(
       {
         user_id: user_id,
@@ -24,7 +24,7 @@ module.exports.isDayliCardExist = function({ user_id, date }) {
 };
 
 module.exports.createNewCard = function({ user_id, date, cards, year, month }) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     let card = new dayliCard({
       _id: new mongoose.Types.ObjectId(),
       user_id: user_id,
@@ -44,7 +44,7 @@ module.exports.createNewCard = function({ user_id, date, cards, year, month }) {
 };
 
 module.exports.getCardTotalAmmount = function({ user_id, date }) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     dayliCard
       .aggregate([
         { $unwind: "$cards" },
@@ -73,7 +73,7 @@ module.exports.updateCardTotalAmmount = function({
   date,
   totalAmmount
 }) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     dayliCard
       .findOneAndUpdate(
         {
@@ -92,7 +92,7 @@ module.exports.updateCardTotalAmmount = function({
 };
 
 module.exports.updateCardExpenses = function({ user_id, date, cards }) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     // console.log(user_id, date, cards);
     dayliCard
       .findOneAndUpdate(
@@ -116,7 +116,7 @@ module.exports.getMonthTotalAmmountExpenses = function({
   year,
   month
 }) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     dayliCard
       .aggregate([
         {
@@ -137,34 +137,42 @@ module.exports.getMonthTotalAmmountExpenses = function({
   });
 };
 
+module.exports.getYearTotalExpenses = function({ user_id, year }) {
+  return new Promise((resolve, reject) => {
+    yearCard
+      .aggregate([
+        { $unwind: "$months" },
+        {
+          $match: { user_id: user_id, year: year }
+        },
+        {
+          $group: {
+            _id: { user_id: "$user_id", year: "$year" },
+            totalAmmount: { $sum: "$months.ammount" },
+            totalIncome: { $sum: "$months.income" }
+          }
+        },
+        { $project: { totalAmmount: true, totalIncome: true, _id: false } }
+      ])
+      .then(res => {
+        resolve(res[0]);
+      })
+      .catch(err => reject(err));
+  });
+};
+
 module.exports.getMonthTotalIncomeExpenses = function({
   user_id,
   year,
   month
 }) {
-  return new Promise(function(resolve, reject) {
-    // dayliCard
-    //   .aggregate([
-    //     {
-    //       $match: { user_id: user_id, year: year, month: month }
-    //     },
-    //     {
-    //       $group: {
-    //         _id: { user_id: "$user_id", year: "$year", month: "$month"  },
-    //         totalAmmount: { $sum: "$totalAmmount" }
-    //       }
-    //     },
-    //     { $project: { totalAmmount: true, _id: false } }
-    //   ])
-    //   .then(res => {
+  return new Promise((resolve, reject) => {
     resolve(152);
-    // })
-    // .catch(err => reject(err));
   });
 };
 
 module.exports.isYearCardExist = function({ user_id, year }) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     yearCard.findOne(
       {
         user_id: user_id,
@@ -185,7 +193,7 @@ module.exports.isYearCardExist = function({ user_id, year }) {
 };
 
 module.exports.isMonthCardExist = function({ user_id, year, month }) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     yearCard.findOne(
       {
         user_id: user_id,
@@ -207,7 +215,7 @@ module.exports.isMonthCardExist = function({ user_id, year, month }) {
 };
 
 module.exports.createYearNewCard = function({ user_id, year }) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     let card = new yearCard({
       _id: new mongoose.Types.ObjectId(),
       user_id: user_id,
@@ -230,7 +238,7 @@ module.exports.createMonthNewCard = function({
   ammount,
   income
 }) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     yearCard
       .findOneAndUpdate(
         {
@@ -261,8 +269,7 @@ module.exports.updateMonthCard = function({
   income,
   ammount
 }) {
-  return new Promise(function(resolve, reject) {
-    console.log(month, income, ammount);
+  return new Promise((resolve, reject) => {
     yearCard
       .findOneAndUpdate(
         {
@@ -278,7 +285,32 @@ module.exports.updateMonthCard = function({
         }
       )
       .then(res => {
-        console.log(res);
+        resolve(res);
+      })
+      .catch(err => reject(err));
+  });
+};
+
+module.exports.updateYearTotalExpenses = async function({
+  user_id,
+  year,
+  yearTotal
+}) {
+  return new Promise((resolve, reject) => {
+    yearCard
+      .findOneAndUpdate(
+        {
+          user_id: user_id,
+          year: year
+        },
+        {
+          $set: {
+            totalAmmount: yearTotal.totalAmmount,
+            totalIncome: yearTotal.totalIncome
+          }
+        }
+      )
+      .then(res => {
         resolve(res);
       })
       .catch(err => reject(err));
@@ -292,33 +324,40 @@ module.exports.getYearlyCardExpenses = async function({
   ammount,
   income
 }) {
-  
-  let isYearCardExist = await this.isYearCardExist({ user_id, year });
-  if (!isYearCardExist) {
-    await this.createYearNewCard({ user_id, year });
-  }
-
-  let isMonthCardExist = await this.isMonthCardExist({ user_id, year, month });
-  if (!isMonthCardExist) {
-    await this.createMonthNewCard({ user_id, year, month, income, ammount });
-  } else {
-    await this.updateMonthCard({ user_id, year, month, income, ammount });
-  }
-
-  return;
-  yearCard
-    .findOneAndUpdate(
-      {
-        user_id: user_id,
-        year: year,
-        "months.number": month
-      },
-      {
-        $set: { string: { a: 1 } }
+  return new Promise(async (resolve, reject) => {
+    try {
+      // check if year card exists in year collection
+      let isYearCardExist = await this.isYearCardExist({ user_id, year });
+      if (!isYearCardExist) {
+        await this.createYearNewCard({ user_id, year });
       }
-    )
-    .then(res => {
-      resolve(res);
-    })
-    .catch(err => reject(err));
+      // check if monthly card exists in year collection
+      let isMonthCardExist = await this.isMonthCardExist({
+        user_id,
+        year,
+        month
+      });
+      if (!isMonthCardExist) {
+        // if monthly card doesn`t exist, create new one in year collection
+        await this.createMonthNewCard({
+          user_id,
+          year,
+          month,
+          income,
+          ammount
+        });
+      } else {
+        // update month card in year collection
+        await this.updateMonthCard({ user_id, year, month, income, ammount });
+      }
+      // get sum of all incomes and ammounts in current year
+      let yearTotal = await this.getYearTotalExpenses({ user_id, year });
+      // update total ammount and income for current year
+      await this.updateYearTotalExpenses({ user_id, year, yearTotal });
+
+      resolve(true);
+    } catch (err) {
+      reject(err);
+    }
+  });
 };
