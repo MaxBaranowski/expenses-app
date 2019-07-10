@@ -11,18 +11,18 @@ module.exports.addDayExpense = function(req, res, next) {
 
   return new Promise((resolve, reject) => {
     _card
-      .isDayliCardExist({ user_id, date })
+      .isDayCardExist({ user_id, date })
       .then(card => {
         if (card) {
           // if card already exists
           _card
-            .updateCardExpenses({ user_id, date, cards, year, month })
+            .addDailyCardExpense({ user_id, date, cards, year, month })
             .then(res => resolve(res))
             .catch(err => reject(err));
         } else {
           // if no card
           _card
-            .createNewCard({ user_id, date, cards, year, month })
+            .createDayCard({ user_id, date, cards, year, month })
             .then(res => resolve(res))
             .catch(err => reject(err));
         }
@@ -31,10 +31,10 @@ module.exports.addDayExpense = function(req, res, next) {
   })
     .then(() => {
       _card
-        .getCardTotalAmmount({ user_id, date })
+        .getDailyCardTotalAmmount({ user_id, date })
         .then(totalAmmount =>
           _card
-            .updateCardTotalAmmount({ user_id, date, totalAmmount })
+            .updateDailyCardTotalAmmount({ user_id, date, totalAmmount })
             .then(done => res.status(200).json("done"))
         )
         .catch(err => next(err));
@@ -62,19 +62,19 @@ module.exports.getFullExpenses = async function(req, res, next) {
     const { year, month } =
       Object.keys(req.body).length > 0 ? req.body : req.params;
 
-    let totalAmmount = await _card.getMonthTotalAmmountExpenses({
+    let totalAmmount = await _card.getMonthlyTotalAmmountExpenses({
       user_id,
       year,
       month
     });
 
-    let totalIncome = await _card.getMonthTotalIncomeExpenses({
+    let totalIncome = await _card.getMonthlyTotalIncomeExpenses({
       user_id,
       year,
       month
     });
 
-    await _card.getYearlyCardExpenses({
+    let result = await _card.updateYearlyCardExpenses({
       user_id,
       year,
       month,
@@ -83,13 +83,10 @@ module.exports.getFullExpenses = async function(req, res, next) {
     });
 
     res.json({
-      ammount: totalAmmount,
-      income: totalIncome,
-      year: year,
-      month: month
+      result
     });
+    
   } catch (err) {
     return next(err);
   }
 };
-
