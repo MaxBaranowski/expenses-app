@@ -368,5 +368,3 @@ module.exports.getMonthlyTotalIncomeExpenses = function({
     resolve(152);
   });
 };
-
-
