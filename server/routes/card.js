@@ -9,5 +9,11 @@ router.post("/addDailyExpenses", card.addDayExpense);
 router.get("/getFullExpenses", card.getFullExpenses);
 router.post("/getFullExpenses", card.getFullExpenses);
 
+router.get("/getYearlyExpenses", card.getYearlyExpenses);
+router.post("/getYearlyExpenses", card.getYearlyExpenses);
+
+router.get("/getMonthlyExpenses", card.getMonthlyExpenses);
+router.post("/getMonthlyExpenses", card.getMonthlyExpenses);
+
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const _card = require("./models/card_db_requests");
 const user_id = "5d1de1e82fc35f0b2acc3b4f"; //req.user._id;
 
-module.exports.addDayExpense = function (req, res, next) {
+module.exports.addDayExpense = function(req, res, next) {
   // if (!req.user) {
   //   res.status(400).json({ error: "User must be loged in!" });
   // }
@@ -39,36 +39,54 @@ module.exports.addDayExpense = function (req, res, next) {
         )
         .catch(err => next(err));
     })
-    .catch(function (err) {
+    .catch(function(err) {
       return next(err);
     });
 };
 
-module.exports.removeDayExpense = function (req, res, next) {
-  return new Promise((resolve, reject) => { })
+module.exports.removeDayExpense = function(req, res, next) {
+  return new Promise((resolve, reject) => {})
     .then(result => {
       res.json(result);
     })
-    .catch(function (err) {
+    .catch(function(err) {
       return next(err);
     });
 };
 
-module.exports.getYear = function (req, res, next) {
+module.exports.getYearlyExpenses = function(req, res, next) {
   // if (!req.user) {
   //   res.status(400).json({ error: "User must be loged in!" });
   // }
 
-  const { year } =
-    Object.keys(req.body).length > 0 ? req.body : req.params;
+  const { year } = Object.keys(req.body).length > 0 ? req.body : req.params;
 
   return new Promise((resolve, reject) => {
-    _card.getYear({ user_id, year })
+    _card.getFullYearCard({ user_id, year }).then(result => res.json(result));
+    // return array with months
+  }).catch(function(err) {
+    return next(err);
   });
-  
 };
 
-module.exports.getFullExpenses = async function (req, res, next) {
+module.exports.getMonthlyExpenses = function(req, res, next) {
+  // if (!req.user) {
+  //   res.status(400).json({ error: "User must be loged in!" });
+  // }
+
+  const { month, year } =
+    Object.keys(req.body).length > 0 ? req.body : req.params;
+  return new Promise((resolve, reject) => {
+    _card
+      .getFullMonthCard({ user_id, month, year })
+      .then(result => res.json(result));
+    // return array with months
+  }).catch(function(err) {
+    return next(err);
+  });
+};
+
+module.exports.getFullExpenses = async function(req, res, next) {
   try {
     // if (!req.user) {
     //   res.status(400).json({ error: "User must be loged in!" });
@@ -99,7 +117,6 @@ module.exports.getFullExpenses = async function (req, res, next) {
     res.json({
       result
     });
-
   } catch (err) {
     return next(err);
   }

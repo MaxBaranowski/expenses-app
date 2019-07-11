@@ -3,14 +3,14 @@ var dayliCard = require("../../../models/CardDay");
 var yearCard = require("../../../models/CardYear");
 
 // check if daily card existed
-module.exports.isDayCardExist = function ({ user_id, date }) {
+module.exports.isDayCardExist = function({ user_id, date }) {
   return new Promise((resolve, reject) => {
     dayliCard.findOne(
       {
         user_id: user_id,
         date: date
       },
-      function (err, card) {
+      function(err, card) {
         if (err) {
           reject(err);
         }
@@ -24,7 +24,7 @@ module.exports.isDayCardExist = function ({ user_id, date }) {
   });
 };
 // check if monthly card existed
-module.exports.isMonthCardExist = function ({ user_id, year, month }) {
+module.exports.isMonthCardExist = function({ user_id, year, month }) {
   return new Promise((resolve, reject) => {
     yearCard.findOne(
       {
@@ -32,7 +32,7 @@ module.exports.isMonthCardExist = function ({ user_id, year, month }) {
         year: year,
         "months.month": month
       },
-      function (err, card) {
+      function(err, card) {
         if (err) {
           reject(err);
         }
@@ -46,14 +46,14 @@ module.exports.isMonthCardExist = function ({ user_id, year, month }) {
   });
 };
 // check if yearly card existed
-module.exports.isYearCardExist = function ({ user_id, year }) {
+module.exports.isYearCardExist = function({ user_id, year }) {
   return new Promise((resolve, reject) => {
     yearCard.findOne(
       {
         user_id: user_id,
         year: year
       },
-      function (err, card) {
+      function(err, card) {
         if (err) {
           reject(err);
         }
@@ -67,9 +67,8 @@ module.exports.isYearCardExist = function ({ user_id, year }) {
   });
 };
 
-
 // create daily card
-module.exports.createDayCard = function ({ user_id, date, cards, year, month }) {
+module.exports.createDayCard = function({ user_id, date, cards, year, month }) {
   return new Promise((resolve, reject) => {
     let card = new dayliCard({
       _id: new mongoose.Types.ObjectId(),
@@ -80,7 +79,7 @@ module.exports.createDayCard = function ({ user_id, date, cards, year, month }) 
       month: month
     });
 
-    card.save(function (error) {
+    card.save(function(error) {
       if (error) {
         reject(error);
       }
@@ -89,7 +88,7 @@ module.exports.createDayCard = function ({ user_id, date, cards, year, month }) 
   });
 };
 // add expense record to daily card
-module.exports.addDailyCardExpense = function ({ user_id, date, cards }) {
+module.exports.addDailyCardExpense = function({ user_id, date, cards }) {
   return new Promise((resolve, reject) => {
     // console.log(user_id, date, cards);
     dayliCard
@@ -109,7 +108,7 @@ module.exports.addDailyCardExpense = function ({ user_id, date, cards }) {
   });
 };
 // create montly record in year collection for user
-module.exports.createMonthCard = function ({
+module.exports.createMonthCard = function({
   user_id,
   year,
   month,
@@ -140,7 +139,7 @@ module.exports.createMonthCard = function ({
   });
 };
 // create yearly card
-module.exports.createYearCard = function ({ user_id, year }) {
+module.exports.createYearCard = function({ user_id, year }) {
   return new Promise((resolve, reject) => {
     let card = new yearCard({
       _id: new mongoose.Types.ObjectId(),
@@ -148,7 +147,7 @@ module.exports.createYearCard = function ({ user_id, year }) {
       year: year
     });
 
-    card.save(function (error) {
+    card.save(function(error) {
       if (error) {
         reject(error);
       }
@@ -157,9 +156,7 @@ module.exports.createYearCard = function ({ user_id, year }) {
   });
 };
 
-
-
-module.exports.updateDailyCardTotalAmmount = function ({
+module.exports.updateDailyCardTotalAmmount = function({
   user_id,
   date,
   totalAmmount
@@ -182,7 +179,7 @@ module.exports.updateDailyCardTotalAmmount = function ({
   });
 };
 
-module.exports.updateYearMonthlyExpenses = function ({
+module.exports.updateYearMonthlyExpenses = function({
   user_id,
   year,
   month,
@@ -211,7 +208,7 @@ module.exports.updateYearMonthlyExpenses = function ({
   });
 };
 
-module.exports.updateYearTotalExpenses = async function ({
+module.exports.updateYearTotalExpenses = async function({
   user_id,
   year,
   yearTotal
@@ -237,7 +234,7 @@ module.exports.updateYearTotalExpenses = async function ({
   });
 };
 
-module.exports.updateYearlyCardExpenses = async function ({
+module.exports.updateYearlyCardExpenses = async function({
   user_id,
   year,
   month,
@@ -268,7 +265,13 @@ module.exports.updateYearlyCardExpenses = async function ({
         });
       } else {
         // update month card in year collection
-        await this.updateYearMonthlyExpenses({ user_id, year, month, income, ammount });
+        await this.updateYearMonthlyExpenses({
+          user_id,
+          year,
+          month,
+          income,
+          ammount
+        });
       }
       // get sum of all incomes and ammounts in current year
       let yearTotal = await this.getYearlyTotalExpenses({ user_id, year });
@@ -282,9 +285,7 @@ module.exports.updateYearlyCardExpenses = async function ({
   });
 };
 
-
-
-module.exports.getDailyCardTotalAmmount = function ({ user_id, date }) {
+module.exports.getDailyCardTotalAmmount = function({ user_id, date }) {
   return new Promise((resolve, reject) => {
     dayliCard
       .aggregate([
@@ -309,7 +310,7 @@ module.exports.getDailyCardTotalAmmount = function ({ user_id, date }) {
   });
 };
 
-module.exports.getMonthlyTotalAmmountExpenses = function ({
+module.exports.getMonthlyTotalAmmountExpenses = function({
   user_id,
   year,
   month
@@ -335,7 +336,7 @@ module.exports.getMonthlyTotalAmmountExpenses = function ({
   });
 };
 
-module.exports.getYearlyTotalExpenses = function ({ user_id, year }) {
+module.exports.getYearlyTotalExpenses = function({ user_id, year }) {
   return new Promise((resolve, reject) => {
     yearCard
       .aggregate([
@@ -359,7 +360,7 @@ module.exports.getYearlyTotalExpenses = function ({ user_id, year }) {
   });
 };
 
-module.exports.getMonthlyTotalIncomeExpenses = function ({
+module.exports.getMonthlyTotalIncomeExpenses = function({
   user_id,
   year,
   month
@@ -369,9 +370,41 @@ module.exports.getMonthlyTotalIncomeExpenses = function ({
   });
 };
 
-module.exports.getFullYearCard = function ({ user_id, year }) {
-  yearCard.find({
-    user_id: user_id,
-    year: year
-  })
+
+
+
+
+
+
+
+
+module.exports.getFullYearCard = function({ user_id, year }) {
+  return new Promise((resolve, reject) => {
+    yearCard
+      .findOne({
+        user_id: user_id,
+        year: year
+      })
+      .select("balance totalAmmount totalIncome year months.month months.ammount months.income")
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => reject(err));
+  });
+};
+
+module.exports.getFullMonthCard = function({ user_id, month, year }) {
+  return new Promise((resolve, reject) => {
+    dayliCard
+      .findOne({
+        user_id: user_id,
+        month: month,
+        year: year
+      })
+      .select("totalAmmount year month cards.ammount cards.created cards.description cards._id")
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => reject(err));
+  });
 };
