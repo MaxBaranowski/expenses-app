@@ -34,6 +34,10 @@ $table-height: 500px;
   }
 }
 
+.active-year {
+  background: #d1e7ff;
+}
+
 #UserExpensesTableBudget {
   display: flex;
   flex-direction: column;

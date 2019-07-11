@@ -23,17 +23,16 @@
               <th colspan="1">Income</th>
             </tr>
           </thead>
+
           <tbody>
-            <tr>
-              <td>January</td>
-              <td>99</td>
-              <td>15</td>
+            <tr v-for="(month,key) in months" v-bind:key="'month'+month">
+              <td>{{month}}</td>
+
+              <!-- <td>{{years[activeYear].months[key-1]}}</td> -->
+              <td>44</td>
+              <td>44</td>
             </tr>
-            <tr>
-              <td>February</td>
-              <td>99</td>
-              <td>15</td>
-            </tr>
+            <!--  years[activeYear].months .months[months.indexOf(month)].ammount
             <tr class="active">
               <td>March</td>
               <td>
@@ -42,56 +41,12 @@
               <td>
                 <span class="table-money">15</span>
               </td>
-            </tr>
-            <tr>
-              <td>April</td>
-              <td>99</td>
-              <td>15</td>
-            </tr>
-            <tr>
-              <td>May</td>
-              <td>99</td>
-              <td>15</td>
-            </tr>
-            <tr>
-              <td>June</td>
-              <td>99</td>
-              <td>15</td>
-            </tr>
-            <tr>
-              <td>July</td>
-              <td>99</td>
-              <td>15</td>
-            </tr>
-            <tr>
-              <td>August</td>
-              <td>99</td>
-              <td>15</td>
-            </tr>
-            <tr>
-              <td>September</td>
-              <td>99</td>
-              <td>15</td>
-            </tr>
-            <tr>
-              <td>October</td>
-              <td>99</td>
-              <td>15</td>
-            </tr>
-            <tr>
-              <td>November</td>
-              <td>99</td>
-              <td>15</td>
-            </tr>
-            <tr>
-              <td>December</td>
-              <td>99</td>
-              <td>15</td>
-            </tr>
+            </tr>-->
+
             <tr class="expenses-calendar-months-total">
               <td>Total:</td>
-              <td>4599</td>
-              <td>1455</td>
+              <td>{{years[activeYear].totalAmmount}}</td>
+              <td>{{years[activeYear].totalIncome}}</td>
             </tr>
           </tbody>
 
@@ -100,20 +55,23 @@
               <td colspan="3">Years:</td>
             </tr>
             <tr>
-              <td>
-                <a href="#" class="default-button button-left">2017</a>
-              </td>
-              <td>
-                <a href="#" class="default-button">2018</a>
-              </td>
-              <td>
-                <a href="#" class="default-button button-right">2019</a>
+              <td v-for="(months, year) in years" v-bind:key="'year_'+year">
+                <a
+                  href="#"
+                  v-on:click="changeYear(year, $event)"
+                  :ref="'year_'+year"
+                  :class="[
+                    'default-button' , 
+                    (Object.keys(years).indexOf(year) == 0 ? 'button-left': ''), , 
+                    (Object.keys(years).indexOf(year) == Object.keys(years).length-1 ? 'button-right': '') 
+                  ]"
+                >{{year}}</a>
               </td>
             </tr>
           </tfoot>
         </table>
 
-        <div class="expenses-calendar-month-day-cards">
+        <div v-if="activeYear" class="expenses-calendar-month-day-cards">
           <div class="expenses-calendar-card">
             <h3 class="expenses-calendar-card-day">
               <span class="arrow down">&#10095;</span> 2019-12-19
@@ -208,6 +166,7 @@
             </table>
           </div>
         </div>
+        <h1 v-else>no data for current year</h1>
       </main>
     </section>
   </div>
@@ -216,12 +175,83 @@
 <script>
 import "../UserExpensesTable.scss";
 
+const defaultData = { activeYear: "2018", year: 2018, month: 1 };
+const GET_YEAR_DATA_URL = "http://localhost:3000/card/getYearlyExpenses";
+
 export default {
   name: "UserExpensesTableBudget",
   data() {
-    return {};
+    return {
+      years: {
+        "2017": {},
+        "2018": {},
+        "2019": {}
+      },
+      months: {
+        1: "January",
+        2: "February",
+        3: "March",
+        4: "April",
+        5: "May",
+        6: "June",
+        7: "July",
+        8: "August",
+        9: "September",
+        10: "October",
+        11: "November",
+        12: "December"
+      },
+      activeYear: defaultData.activeYear
+    };
   },
-  methods: {},
-  mounted() {}
+  methods: {
+    chooseDefaultActiveYear() {
+      this.setActiveYear(defaultData.activeYear);
+      this.getYearData(defaultData.year, defaultData.month);
+    },
+    setActiveYear(year) {
+      this.$refs["year_" + year][0].classList.add("active-year");
+      this.activeYear = year;
+    },
+    changeYear(year, event) {
+      if (!event) {
+        return;
+      }
+      // let element = event.target;
+      // console.log(element, year);
+      this.setActiveYear(year);
+    },
+    getYearData(year, month) {
+      this.axios({
+        method: "post",
+        url: GET_YEAR_DATA_URL,
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        data: { year: year, month: month }
+      })
+        .then(result => {
+          if (!result) return;
+          this.years[result.data.year] = result.data;
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response.data);
+            this.errors["submit"] = error.response.data.error;
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log("Error", error.message);
+          }
+        });
+    }
+  },
+  beforeCreate() {},
+  mounted() {
+    this.chooseDefaultActiveYear();
+  }
 };
 </script>
