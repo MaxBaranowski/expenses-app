@@ -25,28 +25,28 @@
           </thead>
 
           <tbody>
-            <tr v-for="(month,key) in months" v-bind:key="'month'+month">
+            <tr v-for="(month,key) in months" v-bind:key="'month_' + month">
               <td>{{month}}</td>
 
-              <!-- <td>{{years[activeYear].months[key-1]}}</td> -->
-              <td>44</td>
-              <td>44</td>
+              <td
+                v-if="years[activeYear].hasOwnProperty('months') && years[activeYear].months.hasOwnProperty(key-1)"
+              >
+                <span class="table-money">{{years[activeYear].months[key-1].ammount}}</span>
+              </td>
+              <td v-else>-</td>
+
+              <td
+                v-if="years[activeYear].hasOwnProperty('months') && years[activeYear].months.hasOwnProperty(key-1)"
+              >
+                <span class="table-money">{{years[activeYear].months[key-1].income}}</span>
+              </td>
+              <td v-else>-</td>
             </tr>
-            <!--  years[activeYear].months .months[months.indexOf(month)].ammount
-            <tr class="active">
-              <td>March</td>
-              <td>
-                <span class="table-money">99</span>
-              </td>
-              <td>
-                <span class="table-money">15</span>
-              </td>
-            </tr>-->
 
             <tr class="expenses-calendar-months-total">
               <td>Total:</td>
-              <td>{{years[activeYear].totalAmmount}}</td>
-              <td>{{years[activeYear].totalIncome}}</td>
+              <td>{{years[activeYear].totalAmmount || 0}}</td>
+              <td>{{years[activeYear].totalIncome || 0}}</td>
             </tr>
           </tbody>
 
@@ -55,11 +55,11 @@
               <td colspan="3">Years:</td>
             </tr>
             <tr>
-              <td v-for="(months, year) in years" v-bind:key="'year_'+year">
+              <td v-for="(el, year) in years" v-bind:key="'year_' + year">
                 <a
                   href="#"
                   v-on:click="changeYear(year, $event)"
-                  :ref="'year_'+year"
+                  :ref="'year_' + year"
                   :class="[
                     'default-button' , 
                     (Object.keys(years).indexOf(year) == 0 ? 'button-left': ''), , 
@@ -207,7 +207,7 @@ export default {
   methods: {
     chooseDefaultActiveYear() {
       this.setActiveYear(defaultData.activeYear);
-      this.getYearData(defaultData.year, defaultData.month);
+      // this.getYearData(defaultData.year, defaultData.month);
     },
     setActiveYear(year) {
       this.$refs["year_" + year][0].classList.add("active-year");
@@ -249,7 +249,10 @@ export default {
         });
     }
   },
-  beforeCreate() {},
+  created() {
+    // this.chooseDefaultActiveYear();
+    this.getYearData(defaultData.year, defaultData.month);
+  },
   mounted() {
     this.chooseDefaultActiveYear();
   }
