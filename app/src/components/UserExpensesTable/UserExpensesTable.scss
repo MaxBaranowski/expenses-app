@@ -87,12 +87,19 @@ $table-height: 500px;
         }
         tbody {
           tr {
-            &.active {
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            &.active,
+            &.active:hover {
               border-left: 3px solid #007aff;
               background: #d1e7ff;
               td:first-of-type {
                 font-weight: 500;
               }
+            }
+            &:hover {
+              background: #efefef;
+              border-left: 3px solid lightgray;
             }
             td {
               span.table-money {

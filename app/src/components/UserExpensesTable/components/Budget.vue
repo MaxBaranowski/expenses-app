@@ -26,11 +26,15 @@
 
           <tbody>
             <tr
-              v-on:click="getMonthData(key)"
-              v-for="(month,key) in months"
+              v-on:click="changeMonth(key)"
+              v-for="(month, key) in months"
               v-bind:key="activeYear + '_' + key"
+              :ref="'month_' + key"
+              :class="[
+              (activeMonth.month == key ? 'active' :'')
+              ]"
             >
-              <td>{{month}} {{key}}</td>
+              <td>{{month}}</td>
 
               <td
                 v-if="years[activeYear].hasOwnProperty('months') && years[activeYear].months.hasOwnProperty(key)"
@@ -206,7 +210,11 @@ export default {
         11: "November",
         12: "December"
       },
-      activeYear: defaultData.activeYear
+      activeYear: defaultData.activeYear,
+      activeMonth: {
+        month: defaultData.month,
+        cards: []
+      }
     };
   },
   methods: {
@@ -224,11 +232,21 @@ export default {
       this.activeYear = year;
       this.getYearData(this.activeYear, defaultData.month);
     },
+    setActiveMonth(currentMonth) {
+      for (let month = 1; month <= 12; month++) {
+        this.$refs["month_" + month][0].classList.remove("active");
+      }
+      this.$refs["month_" + currentMonth][0].classList.add("active");
+    },
     changeYear(year, event) {
       if (!event) {
         return;
       }
       this.setActiveYear(year);
+    },
+    changeMonth(month) {
+      this.setActiveMonth(month);
+      this.getMonthData(month);
     },
     getYearData(year, month) {
       this.axios({
@@ -259,7 +277,7 @@ export default {
     getMonthData(month = 1) {
       let currentYear = this.activeYear;
       let currentMonth = month;
-      
+
       // console.log(currentYear, month);
       this.axios({
         method: "post",
@@ -272,7 +290,7 @@ export default {
       })
         .then(result => {
           if (!result || !result.data) return;
-          console.log(result.data)
+          console.log(result.data);
           // this.years[result.data.year] = result.data;
         })
         .catch(error => {
