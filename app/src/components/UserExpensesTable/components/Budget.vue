@@ -5,7 +5,7 @@
         <h1>Expenses Office</h1>
         <p class="expenses-balance">
           Balance: $
-          <span>195.0</span>
+          <span>{{years[activeYear].balance || 0}}</span>
         </p>
         <div class="expenses-actions">
           <a href="#" class="default-button button-left">
@@ -210,15 +210,19 @@ export default {
       // this.getYearData(defaultData.year, defaultData.month);
     },
     setActiveYear(year) {
+      let years = Object.keys(this.years);
+      for (let year = 0; year < years.length; year++) {
+        this.$refs["year_" + years[year]][0].classList.remove("active-year");
+      }
+
       this.$refs["year_" + year][0].classList.add("active-year");
       this.activeYear = year;
+      this.getYearData(this.activeYear, defaultData.month);
     },
     changeYear(year, event) {
       if (!event) {
         return;
       }
-      // let element = event.target;
-      // console.log(element, year);
       this.setActiveYear(year);
     },
     getYearData(year, month) {
