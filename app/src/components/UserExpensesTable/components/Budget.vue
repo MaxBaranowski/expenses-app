@@ -25,20 +25,24 @@
           </thead>
 
           <tbody>
-            <tr v-for="(month,key) in months" v-bind:key="'month_' + month">
-              <td>{{month}}</td>
+            <tr
+              v-on:click="getMonthData(key)"
+              v-for="(month,key) in months"
+              v-bind:key="activeYear + '_' + key"
+            >
+              <td>{{month}} {{key}}</td>
 
               <td
-                v-if="years[activeYear].hasOwnProperty('months') && years[activeYear].months.hasOwnProperty(key-1)"
+                v-if="years[activeYear].hasOwnProperty('months') && years[activeYear].months.hasOwnProperty(key)"
               >
-                <span class="table-money">{{years[activeYear].months[key-1].ammount}}</span>
+                <span class="table-money">{{years[activeYear].months[key].ammount}}</span>
               </td>
               <td v-else>-</td>
 
               <td
-                v-if="years[activeYear].hasOwnProperty('months') && years[activeYear].months.hasOwnProperty(key-1)"
+                v-if="years[activeYear].hasOwnProperty('months') && years[activeYear].months.hasOwnProperty(key)"
               >
-                <span class="table-money">{{years[activeYear].months[key-1].income}}</span>
+                <span class="table-money">{{years[activeYear].months[key].income}}</span>
               </td>
               <td v-else>-</td>
             </tr>
@@ -55,7 +59,7 @@
               <td colspan="3">Years:</td>
             </tr>
             <tr>
-              <td v-for="(el, year) in years" v-bind:key="'year_' + year">
+              <td v-for="(el, year) in years" v-bind:key="year">
                 <a
                   href="#"
                   v-on:click="changeYear(year, $event)"
@@ -177,6 +181,7 @@ import "../UserExpensesTable.scss";
 
 const defaultData = { activeYear: "2018", year: 2018, month: 1 };
 const GET_YEAR_DATA_URL = "http://localhost:3000/card/getYearlyExpenses";
+const GET_MONTH_DATA_URL = "http://localhost:3000/card/getMonthlyExpenses";
 
 export default {
   name: "UserExpensesTableBudget",
@@ -242,7 +247,37 @@ export default {
         .catch(error => {
           if (error.response) {
             console.log(error.response.data);
-            this.errors["submit"] = error.response.data.error;
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log("Error", error.message);
+          }
+        });
+    },
+    getMonthData(month = 1) {
+      let currentYear = this.activeYear;
+      let currentMonth = month;
+      
+      // console.log(currentYear, month);
+      this.axios({
+        method: "post",
+        url: GET_MONTH_DATA_URL,
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        data: { year: currentYear, month: currentMonth }
+      })
+        .then(result => {
+          if (!result || !result.data) return;
+          console.log(result.data)
+          // this.years[result.data.year] = result.data;
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response.data);
           } else if (error.request) {
             // The request was made but no response was received
             console.log(error.request);

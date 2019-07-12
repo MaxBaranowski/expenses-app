@@ -370,14 +370,6 @@ module.exports.getMonthlyTotalIncomeExpenses = function({
   });
 };
 
-
-
-
-
-
-
-
-
 module.exports.getFullYearCard = function({ user_id, year }) {
   return new Promise((resolve, reject) => {
     yearCard
@@ -385,9 +377,25 @@ module.exports.getFullYearCard = function({ user_id, year }) {
         user_id: user_id,
         year: year
       })
-      .select("balance totalAmmount totalIncome year months.month months.ammount months.income")
+      .select(
+        "balance totalAmmount totalIncome year months.month months.ammount months.income"
+      )
       .then(res => {
-        resolve(res);
+        let { balance, totalAmmount, totalIncome, year, _id } = res;
+        let months = {};
+
+        for (let key of res.months) {
+          months[key.month] = key;
+        }
+
+        resolve({
+          balance: balance,
+          totalAmmount: totalAmmount,
+          totalIncome: totalIncome,
+          year: year,
+          _id: _id,
+          months: months
+        });
       })
       .catch(err => reject(err));
   });
@@ -401,7 +409,9 @@ module.exports.getFullMonthCard = function({ user_id, month, year }) {
         month: month,
         year: year
       })
-      .select("totalAmmount year month cards.ammount cards.created cards.description cards._id")
+      .select(
+        "totalAmmount year month cards.ammount cards.created cards.description cards._id"
+      )
       .then(res => {
         resolve(res);
       })
