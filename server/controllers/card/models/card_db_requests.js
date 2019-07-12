@@ -404,13 +404,13 @@ module.exports.getFullYearCard = function({ user_id, year }) {
 module.exports.getFullMonthCard = function({ user_id, month, year }) {
   return new Promise((resolve, reject) => {
     dayliCard
-      .findOne({
+      .find({
         user_id: user_id,
         month: month,
         year: year
       })
       .select(
-        "totalAmmount year month cards.ammount cards.created cards.description cards._id"
+        "totalAmmount year month date cards.ammount cards.created cards.description cards._id"
       )
       .then(res => {
         resolve(res);

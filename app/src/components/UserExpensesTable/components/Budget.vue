@@ -79,10 +79,11 @@
           </tfoot>
         </table>
 
-        <div v-if="activeYear" class="expenses-calendar-month-day-cards">
-          <div class="expenses-calendar-card">
+        <div v-if="activeMonth.cards.length > 0" class="expenses-calendar-month-day-cards">
+          <div v-for="day of activeMonth.cards" v-bind:key="day._id" class="expenses-calendar-card">
             <h3 class="expenses-calendar-card-day">
-              <span class="arrow down">&#10095;</span> 2019-12-19
+              <span class="arrow down">&#10095;</span>
+              {{convertDate(day.date)}}
             </h3>
             <table class="expenses-calendar-card-table">
               <thead>
@@ -94,10 +95,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td colspan="3">Beer</td>
-                  <td colspan="2">$32</td>
+                <tr v-for="card of day.cards" v-bind:key="card._id">
+                  <td>{{day.cards.indexOf(card)+1}}</td>
+                  <td colspan="3">{{card.description}}</td>
+                  <td colspan="2">${{card.ammount}}</td>
                   <td colspan="2">Delete</td>
                 </tr>
               </tbody>
@@ -105,76 +106,14 @@
                 <tr>
                   <td></td>
                   <td colspan="3">Total</td>
-                  <td colspan="2">$32</td>
-                  <td colspan="2"></td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-          <div class="expenses-calendar-card">
-            <h3 class="expenses-calendar-card-day">
-              <span class="arrow down">&#10095;</span> 2019-12-19
-            </h3>
-            <table class="expenses-calendar-card-table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th colspan="3">Description</th>
-                  <th colspan="2">Ammount</th>
-                  <th colspan="2">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td colspan="3">Beer</td>
-                  <td colspan="2">$32</td>
-                  <td colspan="2">Delete</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td></td>
-                  <td colspan="3">Total</td>
-                  <td colspan="2">$32</td>
-                  <td colspan="2"></td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-          <div class="expenses-calendar-card">
-            <h3 class="expenses-calendar-card-day">
-              <span class="arrow down">&#10095;</span> 2019-12-19
-            </h3>
-            <table class="expenses-calendar-card-table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th colspan="3">Description</th>
-                  <th colspan="2">Ammount</th>
-                  <th colspan="2">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td colspan="3">Beer</td>
-                  <td colspan="2">$32</td>
-                  <td colspan="2">Delete</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td></td>
-                  <td colspan="3">Total</td>
-                  <td colspan="2">$32</td>
+                  <td colspan="2">${{day.totalAmmount}}</td>
                   <td colspan="2"></td>
                 </tr>
               </tfoot>
             </table>
           </div>
         </div>
-        <h1 v-else>no data for current year</h1>
+        <h1 v-else>No data</h1>
       </main>
     </section>
   </div>
@@ -237,6 +176,7 @@ export default {
         this.$refs["month_" + month][0].classList.remove("active");
       }
       this.$refs["month_" + currentMonth][0].classList.add("active");
+      this.activeMonth.month = currentMonth;
     },
     changeYear(year, event) {
       if (!event) {
@@ -274,6 +214,18 @@ export default {
           }
         });
     },
+    convertDate(dateString) {
+      return dateString
+        .toString()
+        .match(/(\d{4})(\d{2})(\d{2})/)
+        .slice(1)
+        .join("-");
+      // let year = new Date(dateString).getUTCFullYear();
+      // let month = new Date(dateString).getUTCFullMonth();
+      // let day = new Date(dateString).getUTCFullDay();
+
+      // return `${year}-${month}-${day}`;
+    },
     getMonthData(month = 1) {
       let currentYear = this.activeYear;
       let currentMonth = month;
@@ -290,7 +242,8 @@ export default {
       })
         .then(result => {
           if (!result || !result.data) return;
-          console.log(result.data);
+          // console.log(result);
+          this.activeMonth.cards = result.data;
           // this.years[result.data.year] = result.data;
         })
         .catch(error => {
