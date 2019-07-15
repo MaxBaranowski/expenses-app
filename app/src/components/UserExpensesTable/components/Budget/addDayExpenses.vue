@@ -1,22 +1,34 @@
 <template>
   <section id="addDayExpenses-wrapper">
-    <form id="addDayExpensesForm" v-on:submit.prevent>
+    <form id="addDayExpensesForm" v-on:submit.prevent="handleSubmit">
       <header>
         <h1>New Expanse Card</h1>
-        <div class="close">x</div>
+        <div @click="closeModal" class="close">x</div>
       </header>
       <main>
         <label for="ammount">Ammount:</label>
-        <input type="text" name="ammount" id="ammount" />
+        <input
+          type="number"
+          v-model.number="dayExpenses.cards[0].ammount"
+          name="ammount"
+          id="ammount"
+          required
+        />
 
         <label for="date">Date:</label>
-        <input type="date" name="date" id="ammount" />
+        <input type="date" @change="dateModify" name="date" id="ammount" required />
 
         <label for="description">Description:</label>
-        <input type="text" name="description" id="description" />
+        <input
+          type="text"
+          v-model="dayExpenses.cards[0].description"
+          name="description"
+          id="description"
+          required
+        />
       </main>
       <footer>
-        <button>Cancel</button>
+        <button @click="closeModal" type="button">Cancel</button>
         <button type="sumbit" form="addDayExpensesForm">Save</button>
       </footer>
     </form>
@@ -25,7 +37,46 @@
 
 <script>
 export default {
-  name: "addDayExpenses"
+  name: "addDayExpenses",
+  data() {
+    return {
+      dayExpenses: {
+        cards: [
+          {
+            description: "", // from form
+            ammount: 0 // from form
+          }
+        ],
+        date: null, // from form
+        year: null,
+        month: null
+      }
+    };
+  },
+  methods: {
+    handleSubmit() {
+      alert();
+    },
+    closeModal() {
+      this.$emit("close");
+    },
+    dateModify(element) {
+      let oldDate = element.target.value;
+      let year = new Date(oldDate).getUTCFullYear();
+      let month =
+        new Date(oldDate).getUTCMonth() < 10
+          ? "0" + (Number(new Date(oldDate).getUTCMonth()) + 1)
+          : Number(new Date(oldDate).getUTCMonth()) + 1;
+      let day =
+        new Date(oldDate).getUTCDate() < 10
+          ? "0" + new Date(oldDate).getUTCDate()
+          : new Date(oldDate).getUTCDate();
+
+      this.dayExpenses.month = Number(day);
+      this.dayExpenses.year = Number(year);
+      this.dayExpenses.date = Number(year + month + day);
+    }
+  }
 };
 </script>
 

@@ -3,17 +3,17 @@
     <form id="addIncomeForm" v-on:submit.prevent>
       <header>
         <h1>New Income</h1>
-        <div class="close">x</div>
+        <div @click="closeModal" class="close">x</div>
       </header>
       <main>
         <label for="income">Income:</label>
-        <input type="text" name="income" id="income" />
+        <input type="text" name="income" id="income" required />
 
         <label for="date">Date:</label>
-        <input type="date" name="date" id="ammount" />
+        <input type="date" name="date" id="ammount" required />
       </main>
       <footer>
-        <button>Cancel</button>
+        <button @click="closeModal" type="button">Cancel</button>
         <button type="sumbit" form="addIncomeForm">Save</button>
       </footer>
     </form>
@@ -22,7 +22,15 @@
 
 <script>
 export default {
-  name: "addDayExpenses"
+  name: "addIncomeForm",
+  data() {
+    return {};
+  },
+  methods: {
+    closeModal() {
+      this.$emit("close");
+    }
+  }
 };
 </script>
 

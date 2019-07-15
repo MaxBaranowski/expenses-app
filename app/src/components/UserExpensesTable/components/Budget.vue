@@ -8,10 +8,8 @@
           <span>{{years[activeYear].balance || 0}}</span>
         </p>
         <div class="expenses-actions">
-          <a href="#" class="default-button button-left">
-            <span class="arrow down">&#10095;</span> Income
-          </a>
-          <a href="#" class="default-button button-right">New Expenses</a>
+          <a @click="openAddIncomeModel" class="default-button button-left">Income</a>
+          <a @click="openNewExpensesModel" class="default-button button-right">New Expenses</a>
         </div>
       </header>
       <main>
@@ -99,7 +97,9 @@
                   <td>{{day.cards.indexOf(card)+1}}</td>
                   <td colspan="3">{{card.description}}</td>
                   <td colspan="2">${{card.ammount}}</td>
-                  <td colspan="2">Delete</td>
+                  <td colspan="2">
+                    <a href="#">Delete</a>
+                  </td>
                 </tr>
               </tbody>
               <tfoot>
@@ -116,8 +116,14 @@
         <h1 v-else>No data</h1>
       </main>
     </section>
-    <!-- <addDayExpense></addDayExpense> -->
-    <addIncome></addIncome>
+
+    <section v-show="isAddNewExpense">
+      <addDayExpense v-on:close="closeNewExpensesModel" />
+    </section>
+
+    <section v-show="isAddNewIncome">
+      <addIncome v-on:close="closeAddIncomeModel" />
+    </section>
   </div>
 </template>
 
@@ -162,13 +168,15 @@ export default {
       activeMonth: {
         month: defaultData.month,
         cards: []
-      }
+      },
+      isAddNewExpense: false,
+      isAddNewIncome: false
     };
   },
   methods: {
     chooseDefaultActiveYear() {
       this.setActiveYear(defaultData.activeYear);
-      // this.getYearData(defaultData.year, defaultData.month);
+      this.changeMonth(defaultData.month);
     },
     setActiveYear(year) {
       let years = Object.keys(this.years);
@@ -192,6 +200,7 @@ export default {
         return;
       }
       this.setActiveYear(year);
+      this.changeMonth(this.activeMonth.month);
     },
     changeMonth(month) {
       this.setActiveMonth(month);
@@ -229,11 +238,6 @@ export default {
         .match(/(\d{4})(\d{2})(\d{2})/)
         .slice(1)
         .join("-");
-      // let year = new Date(dateString).getUTCFullYear();
-      // let month = new Date(dateString).getUTCFullMonth();
-      // let day = new Date(dateString).getUTCFullDay();
-
-      // return `${year}-${month}-${day}`;
     },
     getMonthData(month = 1) {
       let currentYear = this.activeYear;
@@ -266,6 +270,18 @@ export default {
             console.log("Error", error.message);
           }
         });
+    },
+    openNewExpensesModel() {
+      this.isAddNewExpense = true;
+    },
+    closeNewExpensesModel() {
+      this.isAddNewExpense = false;
+    },
+    openAddIncomeModel() {
+      this.isAddNewIncome = true;
+    },
+    closeAddIncomeModel() {
+      this.isAddNewIncome = false;
     }
   },
   created() {
