@@ -116,11 +116,16 @@
         <h1 v-else>No data</h1>
       </main>
     </section>
+    <!-- <addDayExpense></addDayExpense> -->
+    <addIncome></addIncome>
   </div>
 </template>
 
 <script>
 import "../UserExpensesTable.scss";
+
+import addDayExpense from "./Budget/addDayExpenses";
+import addIncome from "./Budget/addIncome";
 
 const defaultData = { activeYear: "2018", year: 2018, month: 1 };
 const GET_YEAR_DATA_URL = "http://localhost:3000/card/getYearlyExpenses";
@@ -128,6 +133,10 @@ const GET_MONTH_DATA_URL = "http://localhost:3000/card/getMonthlyExpenses";
 
 export default {
   name: "UserExpensesTableBudget",
+  components: {
+    addDayExpense,
+    addIncome
+  },
   data() {
     return {
       years: {

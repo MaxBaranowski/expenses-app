@@ -27,7 +27,7 @@ app.use(logger("dev"));
 // enable cors
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:8080"],
+    origin: ["http://localhost:3000", "http://localhost:8080", "http://172.28.189.142:8080"],
     methods: ["GET", "POST"],
     credentials: true // enable set cookie
   })
