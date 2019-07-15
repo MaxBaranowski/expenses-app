@@ -36,6 +36,8 @@
 </template>
 
 <script>
+const ADD_NEW_EXPENSE_URL = "http://localhost:3000/card/addDailyExpenses";
+
 export default {
   name: "addDayExpenses",
   data() {
@@ -55,10 +57,38 @@ export default {
   },
   methods: {
     handleSubmit() {
-      alert();
+      this.axios({
+        method: "post",
+        url: ADD_NEW_EXPENSE_URL,
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        data: this.dayExpenses
+      })
+        .then(result => {
+          if (!result || !result.data) return;
+          // run parent fucntion with update table data
+          console.log(result)
+          // this.updateTable();
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response.data);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log("Error", error.message);
+          }
+        });
     },
     closeModal() {
       this.$emit("close");
+    },
+    updateTable() {
+      this.$emit("update");
     },
     dateModify(element) {
       let oldDate = element.target.value;
@@ -72,7 +102,7 @@ export default {
           ? "0" + new Date(oldDate).getUTCDate()
           : new Date(oldDate).getUTCDate();
 
-      this.dayExpenses.month = Number(day);
+      this.dayExpenses.month = Number(month);
       this.dayExpenses.year = Number(year);
       this.dayExpenses.date = Number(year + month + day);
     }

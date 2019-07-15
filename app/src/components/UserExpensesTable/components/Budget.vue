@@ -118,11 +118,11 @@
     </section>
 
     <section v-show="isAddNewExpense">
-      <addDayExpense v-on:close="closeNewExpensesModel" />
+      <addDayExpense v-on:update="getYearData" v-on:close="closeNewExpensesModel" />
     </section>
 
     <section v-show="isAddNewIncome">
-      <addIncome v-on:close="closeAddIncomeModel" />
+      <addIncome v-on:update="getYearData" v-on:close="closeAddIncomeModel" />
     </section>
   </div>
 </template>
@@ -206,7 +206,7 @@ export default {
       this.setActiveMonth(month);
       this.getMonthData(month);
     },
-    getYearData(year, month) {
+    getYearData(year = this.activeYear, month = this.activeMonth.month) {
       this.axios({
         method: "post",
         url: GET_YEAR_DATA_URL,

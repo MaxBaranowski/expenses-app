@@ -39,6 +39,35 @@ module.exports.addDayExpense = function(req, res, next) {
         )
         .catch(err => next(err));
     })
+    .then(async () => {
+      // !!!!!!!!!!!!!!!!!!!!!
+      // !!!!!! rewrite !!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!
+      // let totalAmmount = await _card.getMonthlyTotalAmmountExpenses({
+      //   user_id,
+      //   year,
+      //   month
+      // });
+
+      // let totalIncome = await _card.getMonthlyTotalIncomeExpenses({
+      //   user_id,
+      //   year,
+      //   month
+      // });
+
+      // await _card.updateYearlyCardExpenses({
+      //   user_id,
+      //   year,
+      //   month,
+      //   ammount: totalAmmount,
+      //   income: totalIncome
+      // });
+
+      res.status(200).json("done");
+      // !!!!!!!!!!!!!!!!!!!!!
+      // !!!!!! rewrite !!!!!!
+      // !!!!!!!!!!!!!!!!!!!!!
+    })
     .catch(function(err) {
       return next(err);
     });
