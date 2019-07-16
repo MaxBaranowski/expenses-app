@@ -30,43 +30,20 @@ module.exports.addDayExpense = function(req, res, next) {
       .catch(err => reject(err));
   })
     .then(() => {
-      _card
-        .getDailyCardTotalAmmount({ user_id, date })
-        .then(totalAmmount =>
-          _card
-            .updateDailyCardTotalAmmount({ user_id, date, totalAmmount })
-            .then(done => res.status(200).json("done"))
-        )
-        .catch(err => next(err));
+      return new Promise((resolve, reject) => {
+        _card
+          .getDailyCardTotalAmmount({ user_id, date })
+          .then(totalAmmount =>
+            _card
+              .updateDailyCardTotalAmmount({ user_id, date, totalAmmount })
+              .then(done => resolve(done))
+              .catch(err => reject(err))
+          )
+          .catch(err => reject(err));
+      });
     })
-    .then(async () => {
-      // !!!!!!!!!!!!!!!!!!!!!
-      // !!!!!! rewrite !!!!!!
-      // !!!!!!!!!!!!!!!!!!!!!
-      // let totalAmmount = await _card.getMonthlyTotalAmmountExpenses({
-      //   user_id,
-      //   year,
-      //   month
-      // });
-
-      // let totalIncome = await _card.getMonthlyTotalIncomeExpenses({
-      //   user_id,
-      //   year,
-      //   month
-      // });
-
-      // await _card.updateYearlyCardExpenses({
-      //   user_id,
-      //   year,
-      //   month,
-      //   ammount: totalAmmount,
-      //   income: totalIncome
-      // });
-
-      res.status(200).json("done");
-      // !!!!!!!!!!!!!!!!!!!!!
-      // !!!!!! rewrite !!!!!!
-      // !!!!!!!!!!!!!!!!!!!!!
+    .then(() => {
+      module.exports.getFullExpenses(req, res, next);
     })
     .catch(function(err) {
       return next(err);
@@ -144,6 +121,7 @@ module.exports.getFullExpenses = async function(req, res, next) {
     });
 
     res.json({
+      dupa: "dupa",
       result
     });
   } catch (err) {

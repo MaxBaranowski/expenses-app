@@ -70,7 +70,7 @@ export default {
           if (!result || !result.data) return;
           // run parent fucntion with update table data
           console.log(result)
-          // this.updateTable();
+          this.updateTable();
         })
         .catch(error => {
           if (error.response) {

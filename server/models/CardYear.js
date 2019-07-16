@@ -12,7 +12,7 @@ var cardSchema = mongoose.Schema(
         {
           month: {
             type: Number,
-            unique: true
+            // unique: true
           },
           ammount: {
             type: Number
