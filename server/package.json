@@ -20,6 +20,7 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "eslint": "^6.2.1",
     "nodemon": "^1.19.1"
   }
 }
