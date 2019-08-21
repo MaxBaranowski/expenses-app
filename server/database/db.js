@@ -15,7 +15,7 @@ mongoose.connect(
 
 // check for mMngoDb connection
 db.once("open", function() {
-  console.log("| Connection to MongoDB |");
+  console.log("\x1b[32m", "DB connect successfully", "\x1b[0m");
 });
 
 // check for DB error
