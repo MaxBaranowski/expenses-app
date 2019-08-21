@@ -3,6 +3,10 @@ const router = express.Router();
 
 const card = require("../controllers/card/card");
 
+router.get("/", (req, res, next) => {
+  res.send("test, hello")
+});
+
 router.get("/addDailyExpenses", card.addDayExpense);
 router.post("/addDailyExpenses", card.addDayExpense);
 

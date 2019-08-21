@@ -1,0 +1,28 @@
+{
+  "name": "expenses-app",
+  "version": 2,
+  "builds": [{ "src": "bin/www.js", "use": "@now/node" }],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "bin/www.js",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "src": "/user/.*",
+      "dest": "bin/www.js",
+      "methods": ["GET", "POST"]
+    },
+
+    {
+      "src": "/card/.*",
+      "dest": "bin/www.js",
+      "methods": ["GET", "POST"]
+    }
+  ],
+  "env": {
+    "DB_USER": "admin",
+    "DB_PASS": "Hd7hSTG43f8o3nwojd",
+    "DB_DATABASE_NAME": "expenses-app"
+  }
+}

@@ -97,8 +97,11 @@ module.exports.getFullExpenses = async function(req, res, next) {
     // if (!req.user) {
     //   res.status(400).json({ error: "User must be loged in!" });
     // }
-    const { year, month } =
-      Object.keys(req.body).length > 0 ? req.body : req.params;
+    let { year, month } =
+      Object.keys(req.body).length > 0 ? req.body : req.query;
+
+    year = parseInt(year);
+    month = parseInt(month);
 
     let totalAmmount = await _card.getMonthlyTotalAmmountExpenses({
       user_id,
