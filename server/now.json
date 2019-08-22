@@ -6,18 +6,18 @@
     {
       "src": "/",
       "dest": "bin/www.js",
-      "methods": ["GET", "POST"]
+      "methods": ["GET", "POST", "OPTIONS"]
     },
     {
       "src": "/user/.*",
       "dest": "bin/www.js",
-      "methods": ["GET", "POST"]
+      "methods": ["GET", "POST", "OPTIONS"]
     },
 
     {
       "src": "/card/.*",
       "dest": "bin/www.js",
-      "methods": ["GET", "POST"]
+      "methods": ["GET", "POST", "OPTIONS"]
     }
   ],
   "env": {

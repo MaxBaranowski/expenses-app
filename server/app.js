@@ -27,14 +27,17 @@ app.use(logger("dev"));
 // enable cors
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:8080", "http://172.28.189.142:8080"],
-    methods: ["GET", "POST"],
+    origin: [
+      "https://wizardly-snyder-47f16b.netlify.com",
+      "http://localhost:8080"
+    ],
+    methods: ["GET", "POST", "OPTIONS"],
     credentials: true // enable set cookie
   })
 );
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.json({ type: 'application/*+json' }));
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
