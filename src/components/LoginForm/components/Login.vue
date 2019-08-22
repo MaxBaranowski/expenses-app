@@ -37,7 +37,7 @@
 </template>
 
 <script>
-const LOGIN_URL = "https://expenses-app.maksio.now.sh/user/login";
+const LOGIN_URL = "https://expenses-app-r8blpz0zz.now.sh/user/login";
 
 export default {
   /* eslint-disable */

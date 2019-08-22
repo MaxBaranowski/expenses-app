@@ -134,8 +134,8 @@ import addDayExpense from "./Budget/addDayExpenses";
 import addIncome from "./Budget/addIncome";
 
 const defaultData = { activeYear: "2018", year: 2018, month: 1 };
-const GET_YEAR_DATA_URL = "https://expenses-app.maksio.now.sh/card/getYearlyExpenses";
-const GET_MONTH_DATA_URL = "https://expenses-app.maksio.now.sh/card/getMonthlyExpenses";
+const GET_YEAR_DATA_URL = "https://expenses-app-r8blpz0zz.now.sh/card/getYearlyExpenses";
+const GET_MONTH_DATA_URL = "https://expenses-app-r8blpz0zz.now.sh/card/getMonthlyExpenses";
 
 export default {
   name: "UserExpensesTableBudget",
