@@ -29,6 +29,7 @@ app.use(
   cors({
     origin: [
       "https://wizardly-snyder-47f16b.netlify.com",
+      "https://expenses-app.devbaranowski.com",
       "http://localhost:8080"
     ],
     methods: ["GET", "POST", "OPTIONS"],
