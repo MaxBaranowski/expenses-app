@@ -37,7 +37,7 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json({ type: 'application/*+json' }));
+app.use(express.json({ type: 'application/json' }));
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
