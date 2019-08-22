@@ -34,7 +34,7 @@
 
 <script>
 /* eslint-disable */ 
-const LOGIN_URL = "http://localhost:3000/user/signup";
+const LOGIN_URL = "https://expenses-app.maksio.now.sh/user/signup";
 
 export default {
   name: "register-form",
