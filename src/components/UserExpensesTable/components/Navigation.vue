@@ -9,7 +9,7 @@
 </template>
 
 <script>
-const LOGIN_URL = "https://expenses-app-r8blpz0zz.now.sh/user/logout";
+const LOGIN_URL = "https://expenses-app.maksio.now.sh/user/logout";
 
 import "../UserExpensesTable.scss";
 

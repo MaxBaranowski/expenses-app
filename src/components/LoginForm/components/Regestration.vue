@@ -34,7 +34,7 @@
 
 <script>
 /* eslint-disable */ 
-const LOGIN_URL = "https://expenses-app-r8blpz0zz.now.sh/user/signup";
+const LOGIN_URL = "https://expenses-app.maksio.now.sh/user/signup";
 
 export default {
   name: "register-form",
