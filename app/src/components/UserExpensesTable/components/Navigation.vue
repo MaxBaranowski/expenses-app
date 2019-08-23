@@ -2,7 +2,7 @@
   <nav id="UserExpensesTableNav">
     <ul>
       <li>
-        <a v-on:click="makeRequest">logout</a>
+        <a href="#" v-on:click="makeRequest">logout</a>
       </li>
     </ul>
   </nav>

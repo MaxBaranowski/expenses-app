@@ -79,38 +79,62 @@
 
         <div v-if="activeMonth.cards.length > 0" class="expenses-calendar-month-day-cards">
           <div v-for="day of activeMonth.cards" v-bind:key="day._id" class="expenses-calendar-card">
-            <h3 class="expenses-calendar-card-day">
-              <span class="arrow down">&#10095;</span>
+            <h3
+              @click="showHideDayRecords(day, activeMonth.cards.indexOf(day), $event)"
+              class="expenses-calendar-card-day"
+            >
+              <transition>
+                <span v-if="day.show" class="arrow down">&#10095;</span>
+                <span v-else class="arrow up">&#10095;</span>
+              </transition>
               {{convertDate(day.date)}}
             </h3>
-            <table class="expenses-calendar-card-table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th colspan="3">Description</th>
-                  <th colspan="2">Ammount</th>
-                  <th colspan="2">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="card of day.cards" v-bind:key="card._id">
-                  <td>{{day.cards.indexOf(card)+1}}</td>
-                  <td colspan="3">{{card.description}}</td>
-                  <td colspan="2">${{card.ammount}}</td>
-                  <td colspan="2">
-                    <a href="#">Delete</a>
-                  </td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td></td>
-                  <td colspan="3">Total</td>
-                  <td colspan="2">${{day.totalAmmount}}</td>
-                  <td colspan="2"></td>
-                </tr>
-              </tfoot>
-            </table>
+
+            <transition name="fade">
+              <div key="full-card" v-if="day.show">
+                <table class="expenses-calendar-card-table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th colspan="3">Description</th>
+                      <th colspan="2">Ammount</th>
+                      <th colspan="2">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="card of day.cards" v-bind:key="card._id">
+                      <td>{{day.cards.indexOf(card)+1}}</td>
+                      <td colspan="3">{{card.description}}</td>
+                      <td colspan="2">${{card.ammount}}</td>
+                      <td colspan="2">
+                        <a href="#">Delete</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td></td>
+                      <td colspan="3">Total</td>
+                      <td colspan="2">${{day.totalAmmount}}</td>
+                      <td colspan="2"></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <div key="hiden-card" v-else>
+                <table class="expenses-calendar-card-table">
+                  <thead>
+                    <tr>
+                      <th width="200px">Total items:</th>
+                      <th width="50px">{{Object.keys(day.cards).length}}</th>
+                      <th width="200px">Total ammount:</th>
+                      <th width="50px">${{day.totalAmmount}}</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </transition>
           </div>
         </div>
         <h1 v-else>No data</h1>
@@ -261,6 +285,7 @@ export default {
           if (!result || !result.data) return;
           // console.log(result);
           this.activeMonth.cards = result.data;
+          this.activeMonth.cards.map(card => (card.show = false)); //hide detail view of day card by default
           // this.years[result.data.year] = result.data;
         })
         .catch(error => {
@@ -286,6 +311,17 @@ export default {
     },
     closeAddIncomeModel() {
       this.isAddNewIncome = false;
+    },
+    showHideDayRecords(day, dayIndex, event) {
+      // save last version of object data
+      let changed = this.activeMonth.cards[dayIndex];
+      changed.show = !changed.show; // changed it
+
+      this.$set(
+        this.activeMonth.cards,
+        dayIndex,
+        changed // and rewrite for vue, so it can see it now. Everything is caused by arrays
+      );
     }
   },
   created() {
@@ -297,3 +333,18 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  max-height: 1000px;
+  opacity: 1;
+  transition: max-height 0.8s ease-in-out, opacity 0.8s ease-in-out;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  max-height: 0;
+}
+</style>
