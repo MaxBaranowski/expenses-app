@@ -107,7 +107,7 @@
                       <td colspan="3">{{card.description}}</td>
                       <td colspan="2">${{card.ammount}}</td>
                       <td colspan="2">
-                        <a href="#">Delete</a>
+                        <a href="#" @click="deleteCardRecord(card._id, day.date)">Delete</a>
                       </td>
                     </tr>
                   </tbody>
@@ -160,6 +160,7 @@ import addIncome from "./Budget/addIncome";
 const defaultData = { activeYear: "2018", year: 2018, month: 1 };
 const GET_YEAR_DATA_URL = "http://localhost:3000/card/getYearlyExpenses";
 const GET_MONTH_DATA_URL = "http://localhost:3000/card/getMonthlyExpenses";
+const DELETE_CARD_RECORD = "http://localhost:3000/card/deleteCardRecord";
 
 export default {
   name: "UserExpensesTableBudget",
@@ -322,6 +323,37 @@ export default {
         dayIndex,
         changed // and rewrite for vue, so it can see it now. Everything is caused by arrays
       );
+    },
+    deleteCardRecord(id, date) {
+      this.axios({
+        method: "post",
+        url: DELETE_CARD_RECORD,
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        data: {
+          cardId: id,
+          date: date,
+          year: this.activeYear,
+          month: this.activeMonth.month
+        }
+      })
+        .then(result => {
+          if (!result || !result.data) return;
+          console.log(result);
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response.data);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log("Error", error.message);
+          }
+        });
     }
   },
   created() {

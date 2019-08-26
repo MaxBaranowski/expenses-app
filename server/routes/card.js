@@ -19,5 +19,7 @@ router.post("/getYearlyExpenses", card.getYearlyExpenses);
 router.get("/getMonthlyExpenses", card.getMonthlyExpenses);
 router.post("/getMonthlyExpenses", card.getMonthlyExpenses);
 
+router.get("/deleteCardRecord", card.deleteCardRecord);
+router.post("/deleteCardRecord", card.deleteCardRecord);
 
 module.exports = router;

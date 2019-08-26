@@ -302,7 +302,11 @@ module.exports.getDailyCardTotalAmmount = function({ user_id, date }) {
         { $project: { totalAmmount: true, _id: false } }
       ])
       .then(res => {
-        resolve(res[0].totalAmmount);
+        if (res) {
+          resolve(res[0].totalAmmount);
+        } else {
+          resolve(0);
+        }
       })
       .catch(err => {
         reject(err);
@@ -414,6 +418,23 @@ module.exports.getFullMonthCard = function({ user_id, month, year }) {
       )
       .then(res => {
         resolve(res);
+      })
+      .catch(err => reject(err));
+  });
+};
+
+module.exports.deleteCardRecord = function({ user_id, id, date }) {
+  return new Promise((resolve, reject) => {
+    dayliCard
+      .updateOne(
+        //removes ONLY ONE FIRST ELEMENT in array, xactly what i need :)
+        { "cards._id": id, date: date, user_id: user_id }, // nested _id key, in cards array
+        {
+          $pull: { cards: { _id: id } } // update = removes key from array by id
+        }
+      )
+      .then(res => {
+        resolve({ status: "removed" });
       })
       .catch(err => reject(err));
   });

@@ -123,10 +123,27 @@ module.exports.getFullExpenses = async function(req, res, next) {
       income: totalIncome
     });
 
-    res.json({
-      dupa: "dupa",
+    res.status(200).json({
       result
     });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+module.exports.deleteCardRecord = async function(req, res, next) {
+  try {
+    let { cardId: id, date, year, month } =
+      Object.keys(req.body).length > 0 ? req.body : req.query;
+
+    await _card.deleteCardRecord({ id, user_id, date });
+
+    // await _card.getDailyCardTotalAmmount({ user_id, date }).then(totalAmmount =>
+    //   _card
+    //     .updateDailyCardTotalAmmount({ user_id, date, totalAmmount })
+    // );
+
+    res.status(200).json({ status: true });
   } catch (err) {
     return next(err);
   }
