@@ -37,94 +37,94 @@
 </template>
 
 <script>
-const LOGIN_URL = "http://localhost:3000/user/login";
+  const LOGIN_URL = "http://localhost:3000/user/login";
 
-export default {
-  /* eslint-disable */
-  name: "login-form",
-  data() {
-    return {
-      errors: {
-        login: false,
-        password: false,
-        submit: false
-      },
-      credentials: {
-        login: null,
-        password: null
-      }
-    };
-  },
-  methods: {
-    isFieldEmpty(event) {
-      let el = event.target.name;
-      let elValue = event.target.value;
-      if (elValue.length < 1) {
-        this.errors[el] = true;
-      } else {
-        this.errors[el] = false;
-      }
-    },
-    submitForm(e) {
-      e.preventDefault();
-
-      // this.errors = {}; //  reset errors
-
-      this.validLogin();
-      this.validPassword();
-      this.makeRequest();
-    },
-    validLogin() {
-      if (!this.credentials.login) {
-        this.errors["login"] = true;
-      } else {
-        this.errors["login"] = false;
-      }
-    },
-    validPassword() {
-      if (!this.credentials.password) {
-        this.errors["password"] = true;
-      } else {
-        this.errors["password"] = false;
-      }
-    },
-    makeRequest() {
-      if (this.errors.login || this.errors.password) {
-        console.log("errors");
-        return;
-      }
-      this.axios({
-        method: "post",
-        url: LOGIN_URL,
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
+  export default {
+    /* eslint-disable */
+    name: "login-form",
+    data () {
+      return {
+        errors: {
+          login: false,
+          password: false,
+          submit: false
         },
-        data: this.credentials
-      })
-        .then(result => {
-          this.$router.push("/");
-          location.reload();
-          console.log(result);
+        credentials: {
+          login: null,
+          password: null
+        }
+      };
+    },
+    methods: {
+      isFieldEmpty (event) {
+        let el = event.target.name;
+        let elValue = event.target.value;
+        if ( elValue.length < 1 ) {
+          this.errors[el] = true;
+        } else {
+          this.errors[el] = false;
+        }
+      },
+      submitForm (e) {
+        e.preventDefault();
+
+        // this.errors = {}; //  reset errors
+
+        this.validLogin();
+        this.validPassword();
+        this.makeRequest();
+      },
+      validLogin () {
+        if ( !this.credentials.login ) {
+          this.errors["login"] = true;
+        } else {
+          this.errors["login"] = false;
+        }
+      },
+      validPassword () {
+        if ( !this.credentials.password ) {
+          this.errors["password"] = true;
+        } else {
+          this.errors["password"] = false;
+        }
+      },
+      makeRequest () {
+        if ( this.errors.login || this.errors.password ) {
+          console.log("errors");
+          return;
+        }
+        this.axios({
+          method: "post",
+          url: LOGIN_URL,
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          data: this.credentials
         })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response.data);
-            this.errors["submit"] = error.response.data.error;
-          } else if (error.request) {
-            // The request was made but no response was received
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log("Error", error.message);
-          }
-        });
+          .then(result => {
+            this.$router.push("/");
+            location.reload();
+            console.log(result);
+          })
+          .catch(error => {
+            if ( error.response ) {
+              console.log(error.response.data);
+              this.errors["submit"] = error.response.data.error;
+            } else if ( error.request ) {
+              // The request was made but no response was received
+              console.log(error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log("Error", error.message);
+            }
+          });
+      }
+    },
+    mounted () {
+      // console.log(this.$cookie.get("connect.sid"));
     }
-  },
-  mounted() {
-    // console.log(this.$cookie.get("connect.sid"));
-  }
-};
+  };
 </script>
 
 <style scoped>

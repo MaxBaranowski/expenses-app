@@ -8,14 +8,17 @@ $table-height: 500px;
   text-decoration: none;
   cursor: pointer;
   background: #fff;
+
   &.button-left {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
   }
+
   &.button-right {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
   }
+
   &:hover {
     background: #d1e7ff;
   }
@@ -26,9 +29,11 @@ $table-height: 500px;
   padding: 0 5px;
   transition: transform ease-in 0.5s;
   margin: 0 5px 0 0;
+
   &.up {
     transform: rotate(-90deg);
   }
+
   &.down {
     transform: rotate(90deg);
   }
@@ -69,6 +74,7 @@ $table-height: 500px;
       padding: 5px 15px;
       background: #efefef;
     }
+
     main {
       display: flex;
       flex-direction: row;
@@ -79,28 +85,34 @@ $table-height: 500px;
 
       #expenses-calendar-months {
         height: $table-height;
+
         thead {
           th {
             padding: 0 10px;
             text-transform: uppercase;
           }
         }
+
         tbody {
           tr {
             cursor: pointer;
             border-left: 3px solid transparent;
+
             &.active,
             &.active:hover {
               border-left: 3px solid #007aff;
               background: #d1e7ff;
+
               td:first-of-type {
                 font-weight: 500;
               }
             }
+
             &:hover {
               background: #efefef;
               border-left: 3px solid lightgray;
             }
+
             td {
               span.table-money {
                 background: #c3c3c3;
@@ -109,6 +121,7 @@ $table-height: 500px;
               }
             }
           }
+
           .expenses-calendar-months-total {
             font-weight: 500;
             height: 10px;
@@ -119,12 +132,15 @@ $table-height: 500px;
         .expenses-calendar-months-years {
           tr:first-of-type {
             text-align: start;
+
             td {
               padding: 15px 0 0 10px;
             }
           }
+
           tr:nth-of-type(2) {
             height: 30px;
+
             td {
               a {
                 display: inline-block;
@@ -142,19 +158,23 @@ $table-height: 500px;
           border: 1px solid black;
           border-collapse: collapse;
         }
+
         display: flex;
         flex-direction: column;
         flex-grow: 2;
         height: $table-height;
         overflow-y: scroll;
+
         .expenses-calendar-card {
           width: 100%;
           padding: 0 15px 15px 10px;
+
           .expenses-calendar-card-day {
             display: flex;
             justify-self: flex-start;
             padding: 0 5px 0 0;
           }
+
           .expenses-calendar-card-table {
             width: 100%;
           }

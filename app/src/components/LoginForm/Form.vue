@@ -21,20 +21,20 @@
 </template>
 
 <script>
-import "./Form.scss";
+  import "./Form.scss";
 
-export default {
-  name: "Form",
-  data() {
-    return {
-      message: "hello from Form.vue"
-    };
-  },
-  props: {
-    msg: String
-  },
-  methods: {}
-};
+  export default {
+    name: "Form",
+    data () {
+      return {
+        message: "hello from Form.vue"
+      };
+    },
+    props: {
+      msg: String
+    },
+    methods: {}
+  };
 </script>
 
 

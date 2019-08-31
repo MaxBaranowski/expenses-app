@@ -32,7 +32,7 @@ app.use(
       "https://expenses-app.devbaranowski.com",
       "http://localhost:8080"
     ],
-    methods: ["GET", "POST", "OPTIONS"],
+    methods: [ "GET", "POST", "OPTIONS" ],
     credentials: true // enable set cookie
   })
 );
@@ -73,12 +73,12 @@ app.use("/user", userRouter);
 app.use("/card", cardRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   console.log(err);
   res.locals.message = err.message;

@@ -4,9 +4,9 @@ const router = express.Router();
 const auth = require("../controllers/auth");
 require("../oauth/LocalStrategy");
 
-router.get("/", function(req, res, next) {
+router.get("/", function (req, res, next) {
   // req user - user from sessiom
-  console.log("user:",req.user)
+  console.log("user:", req.user)
   res.json(req.user);
 });
 

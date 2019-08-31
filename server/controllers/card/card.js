@@ -1,7 +1,7 @@
 const _card = require("./models/card_db_requests");
 const user_id = "5d1de1e82fc35f0b2acc3b4f"; //req.user._id;
 
-module.exports.addDayExpense = function(req, res, next) {
+module.exports.addDayExpense = function (req, res, next) {
   // if (!req.user) {
   //   res.status(400).json({ error: "User must be loged in!" });
   // }
@@ -13,7 +13,7 @@ module.exports.addDayExpense = function(req, res, next) {
     _card
       .isDayCardExist({ user_id, date })
       .then(card => {
-        if (card) {
+        if ( card ) {
           // if card already exists
           _card
             .addDailyCardExpense({ user_id, date, cards, year, month })
@@ -45,22 +45,23 @@ module.exports.addDayExpense = function(req, res, next) {
     .then(() => {
       module.exports.getFullExpenses(req, res, next);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       return next(err);
     });
 };
 
-module.exports.removeDayExpense = function(req, res, next) {
-  return new Promise((resolve, reject) => {})
+module.exports.removeDayExpense = function (req, res, next) {
+  return new Promise((resolve, reject) => {
+  })
     .then(result => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       return next(err);
     });
 };
 
-module.exports.getYearlyExpenses = function(req, res, next) {
+module.exports.getYearlyExpenses = function (req, res, next) {
   // if (!req.user) {
   //   res.status(400).json({ error: "User must be loged in!" });
   // }
@@ -70,12 +71,12 @@ module.exports.getYearlyExpenses = function(req, res, next) {
   return new Promise((resolve, reject) => {
     _card.getFullYearCard({ user_id, year }).then(result => res.json(result));
     // return array with months
-  }).catch(function(err) {
+  }).catch(function (err) {
     return next(err);
   });
 };
 
-module.exports.getMonthlyExpenses = function(req, res, next) {
+module.exports.getMonthlyExpenses = function (req, res, next) {
   // if (!req.user) {
   //   res.status(400).json({ error: "User must be loged in!" });
   // }
@@ -87,12 +88,12 @@ module.exports.getMonthlyExpenses = function(req, res, next) {
       .getFullMonthCard({ user_id, month, year })
       .then(result => res.json(result));
     // return array with months
-  }).catch(function(err) {
+  }).catch(function (err) {
     return next(err);
   });
 };
 
-module.exports.getFullExpenses = async function(req, res, next) {
+module.exports.getFullExpenses = async function (req, res, next) {
   try {
     // if (!req.user) {
     //   res.status(400).json({ error: "User must be loged in!" });
@@ -126,12 +127,12 @@ module.exports.getFullExpenses = async function(req, res, next) {
     res.status(200).json({
       result
     });
-  } catch (err) {
+  } catch ( err ) {
     return next(err);
   }
 };
 
-module.exports.deleteCardRecord = async function(req, res, next) {
+module.exports.deleteCardRecord = async function (req, res, next) {
   try {
     let { cardId: id, date, year, month } =
       Object.keys(req.body).length > 0 ? req.body : req.query;
@@ -144,7 +145,7 @@ module.exports.deleteCardRecord = async function(req, res, next) {
     // );
 
     res.status(200).json({ status: true });
-  } catch (err) {
+  } catch ( err ) {
     return next(err);
   }
 };
