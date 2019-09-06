@@ -29,7 +29,7 @@
             v-bind:key="activeYear + '_' + key"
             :ref="'month_' + key"
             :class="[
-              (activeMonth.month == key ? 'active' :'')
+              (activeMonth.month === key ? 'active' :'')
               ]"
           >
             <td>{{month}}</td>
@@ -342,6 +342,7 @@
           .then(result => {
             if ( !result || !result.data ) return;
             console.log(result);
+            this.updateTable();
           })
           .catch(error => {
             if ( error.response ) {

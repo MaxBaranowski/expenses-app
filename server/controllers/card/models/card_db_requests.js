@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-var dayliCard = require("../../../models/CardDay");
-var yearCard = require("../../../models/CardYear");
+const dayliCard = require("../../../models/CardDay");
+const yearCard = require("../../../models/CardYear");
 
 // check if daily card existed
 module.exports.isDayCardExist = function ({ user_id, date }) {
