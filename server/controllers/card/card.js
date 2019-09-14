@@ -1,7 +1,7 @@
 const _card = require("./models/card_db_requests");
 //const user_id = "5d1de1e82fc35f0b2acc3b4f"; //req.user._id;
 
-module.exports.addDayExpense = function(req, res, next) {
+module.exports.addDayExpense = function (req, res, next) {
   try {
     let { cards, date, year, month } =
       Object.keys(req.body).length > 0 ? req.body : req.params;
@@ -66,9 +66,10 @@ module.exports.addDayExpense = function(req, res, next) {
   }
 };
 
-module.exports.removeDayExpense = function(req, res, next) {
+module.exports.removeDayExpense = function (req, res, next) {
   try {
-    return new Promise((resolve, reject) => {})
+    return new Promise((resolve, reject) => {
+    })
       .then(result => {
         res.json(result);
       })
@@ -78,7 +79,7 @@ module.exports.removeDayExpense = function(req, res, next) {
   }
 };
 
-module.exports.getYearlyExpenses = function(req, res, next) {
+module.exports.getYearlyExpenses = function (req, res, next) {
   try {
     let { year } = Object.keys(req.body).length > 0 ? req.body : req.query;
     year = parseInt(year);
@@ -94,7 +95,7 @@ module.exports.getYearlyExpenses = function(req, res, next) {
   }
 };
 
-module.exports.getMonthlyExpenses = function(req, res, next) {
+module.exports.getMonthlyExpenses = function (req, res, next) {
   try {
     let { month, year } =
       Object.keys(req.body).length > 0 ? req.body : req.params;
@@ -112,7 +113,7 @@ module.exports.getMonthlyExpenses = function(req, res, next) {
   }
 };
 
-module.exports.getFullExpenses = async function(req, res, next) {
+module.exports.getFullExpenses = async function (req, res, next) {
   try {
     let { year, month } =
       Object.keys(req.body).length > 0 ? req.body : req.query;
@@ -147,11 +148,11 @@ module.exports.getFullExpenses = async function(req, res, next) {
   }
 };
 
-module.exports.deleteCardRecord = async function(req, res, next) {
+module.exports.deleteCardRecord = async function (req, res, next) {
   try {
     let { cardId: id, date, year, month } =
       Object.keys(req.body).length > 0 ? req.body : req.query;
-      
+
     await _card.deleteCardRecord({ id, user_id: String(req.user._id), date });
 
     await _card

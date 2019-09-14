@@ -19,13 +19,13 @@
       Form,
       UserExpensesTable
     },
-    data () {
+    data() {
       return {
         userLoggedIn: false,
         isLoading: true
       };
     },
-    beforeCreate () {
+    beforeCreate() {
       this.isLoading = true;
       this.axios({
         method: "post",

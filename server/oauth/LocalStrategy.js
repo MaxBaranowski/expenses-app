@@ -11,10 +11,10 @@ passport.use(
     },
     function (login, password, done) {
       User.findOne({ email: login, password: password }, function (err, user) {
-        if ( err ) {
+        if (err) {
           return done(err);
         }
-        if ( !user ) {
+        if (!user) {
           return done(null, false, { message: "Login or Password is invalid" });
         }
         return done(null, user);

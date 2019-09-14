@@ -15,11 +15,11 @@
 
   export default {
     name: "ForUserExpensesTablem",
-    data () {
+    data() {
       return {};
     },
     methods: {
-      makeRequest () {
+      makeRequest() {
         this.axios({
           method: "post",
           url: LOGIN_URL,
@@ -34,10 +34,10 @@
             console.log(result);
           })
           .catch(error => {
-            if ( error.response ) {
+            if (error.response) {
               console.log(error.response.data);
               this.errors["submit"] = error.response.data.error;
-            } else if ( error.request ) {
+            } else if (error.request) {
               // The request was made but no response was received
               console.log(error.request);
             } else {
@@ -47,7 +47,7 @@
           });
       }
     },
-    mounted () {
+    mounted() {
     }
   };
 </script>

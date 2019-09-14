@@ -168,7 +168,7 @@
       addDayExpense,
       addIncome
     },
-    data () {
+    data() {
       return {
         years: {
           "2017": {},
@@ -199,13 +199,13 @@
       };
     },
     methods: {
-      chooseDefaultActiveYear () {
+      chooseDefaultActiveYear() {
         this.setActiveYear(defaultData.activeYear);
         this.changeMonth(defaultData.month);
       },
-      setActiveYear (year) {
+      setActiveYear(year) {
         let years = Object.keys(this.years);
-        for ( let year = 0; year < years.length; year++ ) {
+        for (let year = 0; year < years.length; year++) {
           this.$refs["year_" + years[year]][0].classList.remove("active-year");
         }
 
@@ -213,29 +213,29 @@
         this.activeYear = year;
         this.getYearData(this.activeYear, defaultData.month);
       },
-      setActiveMonth (currentMonth) {
-        for ( let month = 1; month <= 12; month++ ) {
+      setActiveMonth(currentMonth) {
+        for (let month = 1; month <= 12; month++) {
           this.$refs["month_" + month][0].classList.remove("active");
         }
         this.$refs["month_" + currentMonth][0].classList.add("active");
         this.activeMonth.month = currentMonth;
       },
-      changeYear (year, event) {
-        if ( !event ) {
+      changeYear(year, event) {
+        if (!event) {
           return;
         }
         this.setActiveYear(year);
         this.changeMonth(this.activeMonth.month);
       },
-      changeMonth (month) {
+      changeMonth(month) {
         this.setActiveMonth(month);
         this.getMonthData(month);
       },
-      updateTable () {
+      updateTable() {
         this.getYearData();
         this.getMonthData(this.activeMonth.month);
       },
-      getYearData (year = this.activeYear, month = this.activeMonth.month) {
+      getYearData(year = this.activeYear, month = this.activeMonth.month) {
         this.axios({
           method: "post",
           url: GET_YEAR_DATA_URL,
@@ -246,13 +246,13 @@
           data: { year: year, month: month }
         })
           .then(result => {
-            if ( !result ) return;
+            if (!result) return;
             this.years[result.data.year] = result.data;
           })
           .catch(error => {
-            if ( error.response ) {
+            if (error.response) {
               console.log(error.response.data);
-            } else if ( error.request ) {
+            } else if (error.request) {
               // The request was made but no response was received
               console.log(error.request);
             } else {
@@ -261,14 +261,14 @@
             }
           });
       },
-      convertDate (dateString) {
+      convertDate(dateString) {
         return dateString
           .toString()
           .match(/(\d{4})(\d{2})(\d{2})/)
           .slice(1)
           .join("-");
       },
-      getMonthData (month = 1) {
+      getMonthData(month = 1) {
         let currentYear = this.activeYear;
         let currentMonth = month;
 
@@ -283,16 +283,16 @@
           data: { year: currentYear, month: currentMonth }
         })
           .then(result => {
-            if ( !result || !result.data ) return;
+            if (!result || !result.data) return;
             // console.log(result);
             this.activeMonth.cards = result.data;
             this.activeMonth.cards.map(card => ( card.show = false )); //hide detail view of day card by default
             // this.years[result.data.year] = result.data;
           })
           .catch(error => {
-            if ( error.response ) {
+            if (error.response) {
               console.log(error.response.data);
-            } else if ( error.request ) {
+            } else if (error.request) {
               // The request was made but no response was received
               console.log(error.request);
             } else {
@@ -301,19 +301,19 @@
             }
           });
       },
-      openNewExpensesModel () {
+      openNewExpensesModel() {
         this.isAddNewExpense = true;
       },
-      closeNewExpensesModel () {
+      closeNewExpensesModel() {
         this.isAddNewExpense = false;
       },
-      openAddIncomeModel () {
+      openAddIncomeModel() {
         this.isAddNewIncome = true;
       },
-      closeAddIncomeModel () {
+      closeAddIncomeModel() {
         this.isAddNewIncome = false;
       },
-      showHideDayRecords (day, dayIndex, event) {
+      showHideDayRecords(day, dayIndex, event) {
         // save last version of object data
         let changed = this.activeMonth.cards[dayIndex];
         changed.show = !changed.show; // changed it
@@ -324,7 +324,7 @@
           changed // and rewrite for vue, so it can see it now. Everything is caused by arrays
         );
       },
-      deleteCardRecord (id, date) {
+      deleteCardRecord(id, date) {
         this.axios({
           method: "post",
           url: DELETE_CARD_RECORD,
@@ -340,14 +340,14 @@
           }
         })
           .then(result => {
-            if ( !result || !result.data ) return;
+            if (!result || !result.data) return;
             console.log(result);
             this.updateTable();
           })
           .catch(error => {
-            if ( error.response ) {
+            if (error.response) {
               console.log(error.response.data);
-            } else if ( error.request ) {
+            } else if (error.request) {
               // The request was made but no response was received
               console.log(error.request);
             } else {
@@ -357,11 +357,11 @@
           });
       }
     },
-    created () {
+    created() {
       // this.chooseDefaultActiveYear();
       this.getYearData(defaultData.year, defaultData.month);
     },
-    mounted () {
+    mounted() {
       this.chooseDefaultActiveYear();
     }
   };

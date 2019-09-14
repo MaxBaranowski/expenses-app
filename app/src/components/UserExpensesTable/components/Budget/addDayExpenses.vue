@@ -40,7 +40,7 @@
 
   export default {
     name: "addDayExpenses",
-    data () {
+    data() {
       return {
         dayExpenses: {
           cards: [
@@ -56,7 +56,7 @@
       };
     },
     methods: {
-      handleSubmit () {
+      handleSubmit() {
         this.axios({
           method: "post",
           url: ADD_NEW_EXPENSE_URL,
@@ -67,15 +67,15 @@
           data: this.dayExpenses
         })
           .then(result => {
-            if ( !result || !result.data ) return;
+            if (!result || !result.data) return;
             // run parent fucntion with update table data
-            console.log(result)
+            console.log(result);
             this.updateTable();
           })
           .catch(error => {
-            if ( error.response ) {
+            if (error.response) {
               console.log(error.response.data);
-            } else if ( error.request ) {
+            } else if (error.request) {
               // The request was made but no response was received
               console.log(error.request);
             } else {
@@ -84,13 +84,13 @@
             }
           });
       },
-      closeModal () {
+      closeModal() {
         this.$emit("close");
       },
-      updateTable () {
+      updateTable() {
         this.$emit("update");
       },
-      dateModify (element) {
+      dateModify(element) {
         let oldDate = element.target.value;
         let year = new Date(oldDate).getUTCFullYear();
         let month =

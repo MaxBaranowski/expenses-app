@@ -42,7 +42,7 @@
   export default {
     /* eslint-disable */
     name: "login-form",
-    data () {
+    data() {
       return {
         errors: {
           login: false,
@@ -56,16 +56,16 @@
       };
     },
     methods: {
-      isFieldEmpty (event) {
+      isFieldEmpty(event) {
         let el = event.target.name;
         let elValue = event.target.value;
-        if ( elValue.length < 1 ) {
+        if (elValue.length < 1) {
           this.errors[el] = true;
         } else {
           this.errors[el] = false;
         }
       },
-      submitForm (e) {
+      submitForm(e) {
         e.preventDefault();
 
         // this.errors = {}; //  reset errors
@@ -74,22 +74,22 @@
         this.validPassword();
         this.makeRequest();
       },
-      validLogin () {
-        if ( !this.credentials.login ) {
+      validLogin() {
+        if (!this.credentials.login) {
           this.errors["login"] = true;
         } else {
           this.errors["login"] = false;
         }
       },
-      validPassword () {
-        if ( !this.credentials.password ) {
+      validPassword() {
+        if (!this.credentials.password) {
           this.errors["password"] = true;
         } else {
           this.errors["password"] = false;
         }
       },
-      makeRequest () {
-        if ( this.errors.login || this.errors.password ) {
+      makeRequest() {
+        if (this.errors.login || this.errors.password) {
           console.log("errors");
           return;
         }
@@ -108,10 +108,10 @@
             console.log(result);
           })
           .catch(error => {
-            if ( error.response ) {
+            if (error.response) {
               console.log(error.response.data);
               this.errors["submit"] = error.response.data.error;
-            } else if ( error.request ) {
+            } else if (error.request) {
               // The request was made but no response was received
               console.log(error.request);
             } else {
@@ -121,7 +121,7 @@
           });
       }
     },
-    mounted () {
+    mounted() {
       // console.log(this.$cookie.get("connect.sid"));
     }
   };

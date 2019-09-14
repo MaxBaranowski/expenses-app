@@ -25,7 +25,7 @@
 
   export default {
     name: "Form",
-    data () {
+    data() {
       return {
         message: "hello from Form.vue"
       };

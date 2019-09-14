@@ -23,11 +23,11 @@
 <script>
   export default {
     name: "addIncomeForm",
-    data () {
+    data() {
       return {};
     },
     methods: {
-      closeModal () {
+      closeModal() {
         this.$emit("close");
       }
     }

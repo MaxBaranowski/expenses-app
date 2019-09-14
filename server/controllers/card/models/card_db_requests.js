@@ -11,10 +11,10 @@ module.exports.isDayCardExist = function ({ user_id, date }) {
         date: date
       },
       function (err, card) {
-        if ( err ) {
+        if (err) {
           reject(err);
         }
-        if ( card ) {
+        if (card) {
           resolve({ user_id: card.user_id, date: card.date }); // card exists
         } else {
           resolve(null); // card doesn`t exists
@@ -33,10 +33,10 @@ module.exports.isMonthCardExist = function ({ user_id, year, month }) {
         "months.month": month
       },
       function (err, card) {
-        if ( err ) {
+        if (err) {
           reject(err);
         }
-        if ( card ) {
+        if (card) {
           resolve({ user_id: card.user_id, year: year }); // card exists
         } else {
           resolve(null); // card doesn`t exists
@@ -54,10 +54,10 @@ module.exports.isYearCardExist = function ({ user_id, year }) {
         year: year
       },
       function (err, card) {
-        if ( err ) {
+        if (err) {
           reject(err);
         }
-        if ( card ) {
+        if (card) {
           resolve({ user_id: card.user_id, year: year }); // card exists
         } else {
           resolve(null); // card doesn`t exists
@@ -80,7 +80,7 @@ module.exports.createDayCard = function ({ user_id, date, cards, year, month }) 
     });
 
     card.save(function (error) {
-      if ( error ) {
+      if (error) {
         reject(error);
       }
       resolve("New card saved!");
@@ -148,7 +148,7 @@ module.exports.createYearCard = function ({ user_id, year }) {
     });
 
     card.save(function (error) {
-      if ( error ) {
+      if (error) {
         reject(error);
       }
       resolve("New year card saved!");
@@ -245,7 +245,7 @@ module.exports.updateYearlyCardExpenses = async function ({
     try {
       // check if year card exists in year collection
       let isYearCardExist = await this.isYearCardExist({ user_id, year });
-      if ( !isYearCardExist ) {
+      if (!isYearCardExist) {
         await this.createYearCard({ user_id, year });
       }
       // check if monthly card exists in year collection
@@ -254,7 +254,7 @@ module.exports.updateYearlyCardExpenses = async function ({
         year,
         month
       });
-      if ( !isMonthCardExist ) {
+      if (!isMonthCardExist) {
         // if monthly card doesn`t exist, create new one in year collection
         await this.createMonthCard({
           user_id,
@@ -279,7 +279,7 @@ module.exports.updateYearlyCardExpenses = async function ({
       await this.updateYearTotalExpenses({ user_id, year, yearTotal });
 
       resolve(true);
-    } catch ( err ) {
+    } catch (err) {
       reject(err);
     }
   });
@@ -302,7 +302,7 @@ module.exports.getDailyCardTotalAmmount = function ({ user_id, date }) {
         { $project: { totalAmmount: true, _id: false } }
       ])
       .then(res => {
-        if ( res ) {
+        if (res) {
           resolve(res[0].totalAmmount);
         } else {
           resolve(0);
@@ -388,7 +388,7 @@ module.exports.getFullYearCard = function ({ user_id, year }) {
         let { balance, totalAmmount, totalIncome, year, _id } = res;
         let months = {};
 
-        for ( let key of res.months ) {
+        for (let key of res.months) {
           months[key.month] = key;
         }
 

@@ -14,7 +14,7 @@ module.exports.signup = function (req, res, next) {
 
   new Promise(function (resolve, reject) {
     user.save(function (err) {
-      if ( err ) reject(err);
+      if (err) reject(err);
       resolve("User successfully saved.");
     });
   }).then(
@@ -29,17 +29,17 @@ module.exports.signup = function (req, res, next) {
 
 module.exports.login = function (req, res, next) {
   passport.authenticate("local", function (err, user, info) {
-    if ( err ) {
+    if (err) {
       return next(err);
     }
-    if ( !user ) {
+    if (!user) {
       return res.status(403).json({ error: info.message });
     }
 
     // using a custom callback, it becomes the application's responsibility to establish a session (by calling req.login()) and send a response.
     // req.login() assigns the user object to the request object req as req.user once the login operation completes.
     req.logIn(user, function (err) {
-      if ( err ) {
+      if (err) {
         return next(err);
       }
       // console.log("login", user);
@@ -64,7 +64,7 @@ module.exports.logout = async function (req, res, next) {
 
 module.exports.isUserAuthorized = async function (req, res, next) {
   // console.log(req.user);
-  if ( req.user ) {
+  if (req.user) {
     res.status(200).send(true);
   } else {
     res.status(403).send(false);
