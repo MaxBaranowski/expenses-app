@@ -268,7 +268,7 @@
           .slice(1)
           .join("-");
       },
-      getMonthData(month = 1) {
+      getMonthData: function (month = 1) {
         let currentYear = this.activeYear;
         let currentMonth = month;
 
@@ -284,10 +284,18 @@
         })
           .then(result => {
             if (!result || !result.data) return;
-            // console.log(result);
+            let openedCards = [];
+            // save opened cards for current month
+            this.activeMonth.cards.forEach(card => {
+                if (card.show) {
+                  // openedCards[card._id] = card.show;
+                  openedCards.push(card._id);
+                }
+              }
+            );
+
             this.activeMonth.cards = result.data;
-            this.activeMonth.cards.map(card => ( card.show = false )); //hide detail view of day card by default
-            // this.years[result.data.year] = result.data;
+            this.activeMonth.cards.forEach(card => ( openedCards.includes(card._id) ? card.show = true : card.show = false )); //hide detail view of day card by default
           })
           .catch(error => {
             if (error.response) {
@@ -341,7 +349,7 @@
         })
           .then(result => {
             if (!result || !result.data) return;
-            console.log(result);
+            // console.log(result);
             this.updateTable();
           })
           .catch(error => {
