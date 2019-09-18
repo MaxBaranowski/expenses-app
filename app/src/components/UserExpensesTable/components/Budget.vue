@@ -68,8 +68,8 @@
                 :ref="'year_' + year"
                 :class="[
                     'default-button' , 
-                    (Object.keys(years).indexOf(year) == 0 ? 'button-left': ''), , 
-                    (Object.keys(years).indexOf(year) == Object.keys(years).length-1 ? 'button-right': '') 
+                    (Object.keys(years).indexOf(year) === 0 ? 'button-left': ''), ,
+                    (Object.keys(years).indexOf(year) === Object.keys(years).length-1 ? 'button-right': '')
                   ]"
               >{{year}}</a>
             </td>
@@ -270,8 +270,6 @@
       },
       getMonthData: function (month = 1) {
         let currentYear = this.activeYear;
-        let currentMonth = month;
-
         // console.log(currentYear, month);
         this.axios({
           method: "post",
@@ -280,7 +278,7 @@
           headers: {
             "Content-Type": "application/json"
           },
-          data: { year: currentYear, month: currentMonth }
+          data: { year: currentYear, month: month }
         })
           .then(result => {
             if (!result || !result.data) return;
