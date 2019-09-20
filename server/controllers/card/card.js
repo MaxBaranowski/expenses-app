@@ -121,8 +121,8 @@ module.exports.getMonthlyExpenses = function (req, res, next) {
   try {
     let { month, year } =
       Object.keys(req.body).length > 0 ? req.body : req.params;
-    month = parseInt(month);
-    year = parseInt(year);
+    month = parseInt(month) || 0; // todo ? parseInt("") => NaN
+    year = parseInt(year) || 0;
 
     _card
       .getFullMonthCard({ user_id: String(req.user._id), month, year })
