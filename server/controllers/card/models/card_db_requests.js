@@ -67,6 +67,8 @@ module.exports.isYearCardExist = function ({ user_id, year }) {
   });
 };
 
+
+
 // create daily card
 module.exports.createDayCard = function ({ user_id, date, cards, year, month }) {
   return new Promise((resolve, reject) => {
@@ -85,26 +87,6 @@ module.exports.createDayCard = function ({ user_id, date, cards, year, month }) 
       }
       resolve("New card saved!");
     });
-  });
-};
-// add expense record to daily card
-module.exports.addDailyCardExpense = function ({ user_id, date, cards }) {
-  return new Promise((resolve, reject) => {
-    // console.log(user_id, date, cards);
-    dayliCard
-      .findOneAndUpdate(
-        {
-          user_id: user_id,
-          date: date
-        },
-        {
-          $push: { cards: cards }
-        }
-      )
-      .then(res => {
-        resolve(res);
-      })
-      .catch(err => reject(err));
   });
 };
 // create montly record in year collection for user
@@ -155,6 +137,47 @@ module.exports.createYearCard = function ({ user_id, year }) {
     });
   });
 };
+
+
+
+// add expense record to daily card
+module.exports.addDailyCardExpense = function ({ user_id, date, cards }) {
+  return new Promise((resolve, reject) => {
+    // console.log(user_id, date, cards);
+    dayliCard
+      .findOneAndUpdate(
+        {
+          user_id: user_id,
+          date: date
+        },
+        {
+          $push: { cards: cards }
+        }
+      )
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => reject(err));
+  });
+};
+// delete one od daily records
+module.exports.deleteDayRecord = function ({ user_id, id, date }) {
+  return new Promise((resolve, reject) => {
+    dayliCard
+      .updateOne(
+        //removes ONLY ONE FIRST ELEMENT in array, xactly what i need :)
+        { "cards._id": id, date: date, user_id: user_id }, // nested _id key, in cards array
+        {
+          $pull: { cards: { _id: id } } // update = removes key from array by id
+        }
+      )
+      .then(res => {
+        resolve({ status: "removed" });
+      })
+      .catch(err => reject(err));
+  });
+};
+
 
 module.exports.updateDailyCardTotalAmmount = function ({
                                                          user_id,
@@ -285,6 +308,8 @@ module.exports.updateYearlyCardExpenses = async function ({
   });
 };
 
+
+
 module.exports.getDailyCardTotalAmmount = function ({ user_id, date }) {
   return new Promise((resolve, reject) => {
     dayliCard
@@ -314,6 +339,18 @@ module.exports.getDailyCardTotalAmmount = function ({ user_id, date }) {
   });
 };
 
+
+
+module.exports.getMonthlyTotalIncomeExpenses = function ({
+                                                           user_id,
+                                                           year,
+                                                           month
+                                                         }) {
+  return new Promise((resolve, reject) => {
+    resolve(152);
+  });
+};
+
 module.exports.getMonthlyTotalAmmountExpenses = function ({
                                                             user_id,
                                                             year,
@@ -340,6 +377,26 @@ module.exports.getMonthlyTotalAmmountExpenses = function ({
   });
 };
 
+module.exports.getFullMonthCard = function ({ user_id, month, year }) {
+  return new Promise((resolve, reject) => {
+    dayliCard
+      .find({
+        user_id: user_id,
+        month: month,
+        year: year
+      })
+      .select(
+        "totalAmmount year month date cards.ammount cards.created cards.description cards._id"
+      )
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => reject(err));
+  });
+};
+
+
+
 module.exports.getYearlyTotalExpenses = function ({ user_id, year }) {
   return new Promise((resolve, reject) => {
     yearCard
@@ -361,16 +418,6 @@ module.exports.getYearlyTotalExpenses = function ({ user_id, year }) {
         resolve(res[0]);
       })
       .catch(err => reject(err));
-  });
-};
-
-module.exports.getMonthlyTotalIncomeExpenses = function ({
-                                                           user_id,
-                                                           year,
-                                                           month
-                                                         }) {
-  return new Promise((resolve, reject) => {
-    resolve(152);
   });
 };
 
@@ -400,41 +447,6 @@ module.exports.getFullYearCard = function ({ user_id, year }) {
           _id: _id,
           months: months
         });
-      })
-      .catch(err => reject(err));
-  });
-};
-
-module.exports.getFullMonthCard = function ({ user_id, month, year }) {
-  return new Promise((resolve, reject) => {
-    dayliCard
-      .find({
-        user_id: user_id,
-        month: month,
-        year: year
-      })
-      .select(
-        "totalAmmount year month date cards.ammount cards.created cards.description cards._id"
-      )
-      .then(res => {
-        resolve(res);
-      })
-      .catch(err => reject(err));
-  });
-};
-
-module.exports.deleteCardRecord = function ({ user_id, id, date }) {
-  return new Promise((resolve, reject) => {
-    dayliCard
-      .updateOne(
-        //removes ONLY ONE FIRST ELEMENT in array, xactly what i need :)
-        { "cards._id": id, date: date, user_id: user_id }, // nested _id key, in cards array
-        {
-          $pull: { cards: { _id: id } } // update = removes key from array by id
-        }
-      )
-      .then(res => {
-        resolve({ status: "removed" });
       })
       .catch(err => reject(err));
   });
