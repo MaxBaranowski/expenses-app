@@ -9,8 +9,11 @@ router.get("/", (req, res, next) => {
 });
 
 
-router.get("/addDailyExpenses", isUserLogIn, card.addDayExpense);
-router.post("/addDailyExpenses", isUserLogIn, card.addDayExpense);
+router.get("/addDailyExpenses", isUserLogIn, card.addDayRecord);
+router.post("/addDailyExpenses", isUserLogIn, card.addDayRecord);
+
+router.get("/deleteCardRecord", isUserLogIn, card.deleteDayRecord);
+router.post("/deleteCardRecord", isUserLogIn, card.deleteDayRecord);
 
 router.get("/getFullExpenses", isUserLogIn, card.getFullExpenses);
 router.post("/getFullExpenses", isUserLogIn, card.getFullExpenses);
@@ -20,8 +23,5 @@ router.post("/getYearlyExpenses", isUserLogIn, card.getYearlyExpenses);
 
 router.get("/getMonthlyExpenses", isUserLogIn, card.getMonthlyExpenses);
 router.post("/getMonthlyExpenses", isUserLogIn, card.getMonthlyExpenses);
-
-router.get("/deleteCardRecord", isUserLogIn, card.deleteCardRecord);
-router.post("/deleteCardRecord", isUserLogIn, card.deleteCardRecord);
 
 module.exports = router;
