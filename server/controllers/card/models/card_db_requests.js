@@ -68,7 +68,6 @@ module.exports.isYearCardExist = function ({ user_id, year }) {
 };
 
 
-
 // create daily card
 module.exports.createDayCard = function ({ user_id, date, cards, year, month }) {
   return new Promise((resolve, reject) => {
@@ -137,7 +136,6 @@ module.exports.createYearCard = function ({ user_id, year }) {
     });
   });
 };
-
 
 
 // add expense record to daily card
@@ -309,7 +307,6 @@ module.exports.updateYearlyCardExpenses = async function ({
 };
 
 
-
 module.exports.getDailyCardTotalAmmount = function ({ user_id, date }) {
   return new Promise((resolve, reject) => {
     dayliCard
@@ -338,7 +335,6 @@ module.exports.getDailyCardTotalAmmount = function ({ user_id, date }) {
       });
   });
 };
-
 
 
 module.exports.getMonthlyTotalIncomeExpenses = function ({
@@ -394,7 +390,6 @@ module.exports.getFullMonthCard = function ({ user_id, month, year }) {
       .catch(err => reject(err));
   });
 };
-
 
 
 module.exports.getYearlyTotalExpenses = function ({ user_id, year }) {
