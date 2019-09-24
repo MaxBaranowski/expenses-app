@@ -78,20 +78,20 @@
         </table>
 
         <div v-if="activeMonth.cards.length > 0" class="expenses-calendar-month-day-cards">
-          <div v-for="day of activeMonth.cards" v-bind:key="day._id" class="expenses-calendar-card">
+          <div v-for="month of activeMonth.cards" v-bind:key="month._id" class="expenses-calendar-card">
             <h3
-              @click="showHideDayRecords(day, activeMonth.cards.indexOf(day), $event)"
+              @click="showHideDayRecords(month, activeMonth.cards.indexOf(month), $event)"
               class="expenses-calendar-card-day"
             >
               <transition>
-                <span v-if="day.show" class="arrow down">&#10095;</span>
+                <span v-if="month.show" class="arrow down">&#10095;</span>
                 <span v-else class="arrow up">&#10095;</span>
               </transition>
-              {{convertDate(day.date)}}
+              {{convertDate(month.date)}}
             </h3>
 
             <transition name="fade">
-              <div key="full-card" v-if="day.show">
+              <div key="full-card" v-if="month.show">
                 <table class="expenses-calendar-card-table">
                   <thead>
                   <tr>
@@ -102,12 +102,12 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="card of day.cards" v-bind:key="card._id">
-                    <td>{{day.cards.indexOf(card)+1}}</td>
+                  <tr v-for="card of month.cards" v-bind:key="card._id">
+                    <td>{{month.cards.indexOf(card)+1}}</td>
                     <td colspan="3">{{card.description}}</td>
                     <td colspan="2">${{card.ammount}}</td>
                     <td colspan="2">
-                      <a href="#" @click="deleteCardRecord(card._id, day.date)">Delete</a>
+                      <a href="#" @click="deleteCardRecord(card._id, month.date, month._id)">Delete</a>
                     </td>
                   </tr>
                   </tbody>
@@ -115,7 +115,7 @@
                   <tr>
                     <td></td>
                     <td colspan="3">Total</td>
-                    <td colspan="2">${{day.totalAmmount}}</td>
+                    <td colspan="2">${{month.totalAmmount}}</td>
                     <td colspan="2"></td>
                   </tr>
                   </tfoot>
@@ -127,9 +127,9 @@
                   <thead>
                   <tr>
                     <th width="200px">Total items:</th>
-                    <th width="50px">{{Object.keys(day.cards).length}}</th>
+                    <th width="50px">{{Object.keys(month.cards).length}}</th>
                     <th width="200px">Total ammount:</th>
-                    <th width="50px">${{day.totalAmmount}}</th>
+                    <th width="50px">${{month.totalAmmount}}</th>
                   </tr>
                   </thead>
                 </table>
@@ -330,7 +330,7 @@
           changed // and rewrite for vue, so it can see it now. Everything is caused by arrays
         );
       },
-      deleteCardRecord(id, date) {
+      deleteCardRecord(id, date, monthId) {
         this.axios({
           method: "post",
           url: DELETE_CARD_RECORD,
@@ -339,6 +339,7 @@
             "Content-Type": "application/json"
           },
           data: {
+            monthId: monthId,
             cardId: id,
             date: date,
             year: this.activeYear,

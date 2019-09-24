@@ -67,24 +67,34 @@ module.exports.addDayRecord = function (req, res, next) {
 
 module.exports.deleteDayRecord = async function (req, res, next) {
   try {
-    let { cardId: id, date, year, month } =
+    let { cardId: id, date, monthId } =
       Object.keys(req.body).length > 0 ? req.body : req.query;
 
-    await _card.deleteDayRecord({ id, user_id: String(req.user._id), date });
+    console.log(monthId);
 
-    await _card
-      .getDailyCardTotalAmmount({ user_id: String(req.user._id), date })
-      .then(totalAmmount =>
-        _card
-          .updateDailyCardTotalAmmount({
-            user_id: String(req.user._id),
-            date,
-            totalAmmount
-          })
-          .then(done => res.status(200).json(done))
-      );
+    await _card.deleteDayRecord({ id, user_id: String(req.user._id), date });
+    // get total amount after removing record
+    let updatedTotal = await _card.getDailyCardTotalAmmount({ user_id: String(req.user._id), date });
+    // update total
+    await _card.updateDailyCardTotalAmmount({
+      user_id: String(req.user._id),
+      date,
+      updatedTotal
+    });
+
+    res.status(200).json(true);
   } catch (err) {
     return next(err);
+  }
+};
+
+module.exports.deleteMonthRecord = async function (req, res, next) {
+  try {
+    let { monthId } =
+      Object.keys(req.body).length > 0 ? req.body : req.query;
+
+  } catch (err) {
+    return next(err)
   }
 };
 
