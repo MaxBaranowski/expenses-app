@@ -60,9 +60,7 @@ module.exports.addDayRecord = function (req, res, next) {
         module.exports.getFullExpenses(req, res, next);
       })
       .catch(err => reject(err));
-  } catch (err) {
-    return next(err);
-  }
+  } catch (err) { return next(err); }
 };
 
 module.exports.deleteDayRecord = async function (req, res, next) {
@@ -70,12 +68,12 @@ module.exports.deleteDayRecord = async function (req, res, next) {
     let { cardId: id, date, monthId } =
       Object.keys(req.body).length > 0 ? req.body : req.query;
 
-    console.log(monthId);
-
     await _card.deleteDayRecord({ id, user_id: String(req.user._id), date });
     // get total amount after removing record
     let updatedTotal = await _card.getDailyCardTotalAmmount({ user_id: String(req.user._id), date });
     // update total
+    updatedTotal === 0 ? await _card.deleteMonthRecord({ monthId }) : void 0;
+
     await _card.updateDailyCardTotalAmmount({
       user_id: String(req.user._id),
       date,
@@ -83,20 +81,9 @@ module.exports.deleteDayRecord = async function (req, res, next) {
     });
 
     res.status(200).json(true);
-  } catch (err) {
-    return next(err);
-  }
+  } catch (err) { return next(err); }
 };
 
-module.exports.deleteMonthRecord = async function (req, res, next) {
-  try {
-    let { monthId } =
-      Object.keys(req.body).length > 0 ? req.body : req.query;
-
-  } catch (err) {
-    return next(err)
-  }
-};
 
 module.exports.deleteMonthRecord = function (req, res, next) {
   try {
@@ -106,9 +93,7 @@ module.exports.deleteMonthRecord = function (req, res, next) {
         res.json(result);
       })
       .catch(err => reject(err));
-  } catch (err) {
-    return next(err);
-  }
+  } catch (err) { return next(err); }
 };
 
 module.exports.getYearlyExpenses = function (req, res, next) {
@@ -122,9 +107,7 @@ module.exports.getYearlyExpenses = function (req, res, next) {
       .catch(err => {
         throw err;
       });
-  } catch (err) {
-    return next(err);
-  }
+  } catch (err) { return next(err); }
 };
 
 module.exports.getMonthlyExpenses = function (req, res, next) {
@@ -140,9 +123,7 @@ module.exports.getMonthlyExpenses = function (req, res, next) {
       .catch(err => {
         throw err;
       });
-  } catch (err) {
-    return next(err);
-  }
+  } catch (err) { return next(err); }
 };
 
 module.exports.getFullExpenses = async function (req, res, next) {
@@ -175,7 +156,5 @@ module.exports.getFullExpenses = async function (req, res, next) {
     res.status(200).json({
       result
     });
-  } catch (err) {
-    return next(err);
-  }
+  } catch (err) { return next(err); }
 };

@@ -155,6 +155,18 @@ module.exports.deleteDayRecord = function ({ user_id, id, date }) {
 };
 
 
+module.exports.deleteMonthRecord = async function({ monthId }) {
+  return new Promise((resolve, reject) => {
+    dayliCard
+      .findOneAndDelete({ _id: monthId })
+      .then(removed => {
+        resolve(removed);
+      })
+      .catch(err => reject(err));
+  });
+};
+
+
 module.exports.updateDailyCardTotalAmmount = function ({ user_id, date, totalAmmount }) {
   return new Promise((resolve, reject) => {
     dayliCard
@@ -256,15 +268,10 @@ module.exports.getDailyCardTotalAmmount = function ({ user_id, date }) {
         { $project: { totalAmmount: true, _id: false } }
       ])
       .then(res => {
-        if (res) {
-          resolve(res[0].totalAmmount);
-        } else {
-          resolve(0);
-        }
+        let day = res.length ? res[0] : false;
+        return day ? resolve(day.totalAmmount): resolve(0);
       })
-      .catch(err => {
-        reject(err);
-      });
+      .catch(err => { reject(err); });
   });
 };
 
