@@ -11,7 +11,7 @@
   import Form from "./components/LoginForm/Form.vue";
   import UserExpensesTable from "./components/UserExpensesTable/UserExpensesTable";
 
-  const LOGIN_URL = "http://localhost:3000/user/isUserAuthorized";
+  const LOGIN_URL = "https://expenses-app.maksio.now.sh/user/isUserAuthorized";
 
   export default {
     name: "app",

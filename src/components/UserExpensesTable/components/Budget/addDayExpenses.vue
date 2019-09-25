@@ -36,7 +36,7 @@
 </template>
 
 <script>
-  const ADD_NEW_EXPENSE_URL = "http://localhost:3000/card/addDailyExpenses";
+  const ADD_NEW_EXPENSE_URL = "https://expenses-app.maksio.now.sh/card/addDailyExpenses";
 
   export default {
     name: "addDayExpenses",
