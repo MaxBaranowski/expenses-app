@@ -5,13 +5,13 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 import LoginForm from "./components/LoginForm/components/Login.vue";
-import RegestrationForm from "./components/LoginForm/components/Regestration";
+import RegistrationForm from "./components/LoginForm/components/Regestration";
 import ForgetPasswordForm from "./components/LoginForm/components/ForgetPassword";
 
 const routes = [
   { path: "/", component: LoginForm },
   { path: "/login", component: LoginForm },
-  { path: "/register", component: RegestrationForm },
+  { path: "/register", component: RegistrationForm },
   { path: "/forget", component: ForgetPasswordForm }
 ];
 
