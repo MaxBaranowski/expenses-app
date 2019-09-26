@@ -3,7 +3,8 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const cors = require("cors");
+const cors = require("cors")
+const cookieSession = require('cookie-session')//seems like default cookie doesnt work on zeit
 
 var passport = require("passport");
 var session = require("express-session");
@@ -45,7 +46,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Express Session
 app.use(
-  session({
+  cookieSession({
     secret: "secret",
     saveUninitialized: true,
     resave: true,
