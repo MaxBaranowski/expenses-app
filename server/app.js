@@ -47,13 +47,14 @@ app.use(express.static(path.join(__dirname, "public")));
 // Express Session
 app.use(
   cookieSession({
+    name: "expenses-app-cookkie",
     secret: "secret",
-    saveUninitialized: true,
-    resave: true,
-    cookie: {
+    // saveUninitialized: true,
+    // resave: true,
+    // cookie: {
       httpOnly: false,
       maxAge: 30 * 60 * 1000
-    } //in miliseconds 1s = 1000ms
+    // } //in miliseconds 1s = 1000ms
   })
 );
 

@@ -3,28 +3,32 @@ var User = require("../models/User");
 var passport = require("passport");
 
 module.exports.signup = function (req, res, next) {
-  let params = req.body || req.query;
-  var user = new User({
-    _id: new mongoose.Types.ObjectId(),
-    firstName: params.firstName,
-    lastName: params.lastName,
-    email: params.login,
-    password: params.password
-  });
-
-  new Promise(function (resolve, reject) {
-    user.save(function (err) {
-      if (err) reject(err);
-      resolve("User successfully saved.");
+  try {
+    let params = req.body || req.query;
+    var user = new User({
+      _id: new mongoose.Types.ObjectId(),
+      firstName: params.firstName,
+      lastName: params.lastName,
+      email: params.login,
+      password: params.password
     });
-  }).then(
-    function (result) {
-      res.status(200).json({ message: result });
-    },
-    function (err) {
-      return next(err);
-    }
-  );
+
+    new Promise(function (resolve, reject) {
+      user.save(function (err) {
+        if (err) reject(err);
+        resolve("User successfully saved.");
+      });
+    }).then(
+      function (result) {
+        res.status(200).json({ message: result });
+      },
+      function (err) {
+        return next(err);
+      }
+    );
+  } catch (err) {
+    return next(err);
+  }
 };
 
 module.exports.login = function (req, res, next) {
@@ -51,15 +55,16 @@ module.exports.login = function (req, res, next) {
 };
 
 module.exports.logout = async function (req, res, next) {
-  console.log(req.user);
-  req.logout();
-  req.session.destroy();
-  res
-    .status(200)
-    .clearCookie("connect.sid", {
+  try {
+    // console.log(req.user);
+    req.logout();
+    // req.session.destroy(); // for session from the box
+    res.status(200).clearCookie("expenses-app-cookkie.sid", {
       path: "/"
-    })
-    .send(true);
+    }).send(true);
+  } catch (err) {
+    return next(err);
+  }
 };
 
 module.exports.isUserAuthorized = async function (req, res, next) {
